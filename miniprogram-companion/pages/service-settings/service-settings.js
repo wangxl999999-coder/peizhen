@@ -18,6 +18,8 @@ Page({
     
     cityIndex: 0,
     hospitalIndex: 0,
+    currentCityName: '',
+    currentHospitalName: '',
     
     isLoading: false,
     isSaving: false
@@ -126,6 +128,7 @@ Page({
     
     this.setData({
       cityIndex: parseInt(value),
+      currentCityName: city.name || '',
       selectedCityIds: [city.id],
       selectedHospitalIds: [],
       selectedDepartmentIds: [],
@@ -142,6 +145,7 @@ Page({
     
     this.setData({
       hospitalIndex: parseInt(value),
+      currentHospitalName: hospital.name || '',
       selectedHospitalIds: [hospital.id],
       selectedDepartmentIds: [],
       departments: []

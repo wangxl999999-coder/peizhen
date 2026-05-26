@@ -14,7 +14,7 @@
   <block wx:if="{{activeTab === 'withdraw'}}">
     <view class="balance-section">
       <text class="balance-label">可提现金额（元）</text>
-      <text class="balance-amount">{{statistics?.withdrawable || '0.00'}}</text>
+      <text class="balance-amount">{{statistics.withdrawable || '0.00'}}</text>
       <text class="balance-tip">提现金额将转入您的微信钱包</text>
     </view>
 

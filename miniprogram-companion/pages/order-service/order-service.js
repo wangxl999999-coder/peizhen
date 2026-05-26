@@ -8,6 +8,8 @@ Page({
     loading: false,
     nodeContent: '',
     fileType: 'medical_report',
+    fileTypeIndex: 0,
+    currentFileTypeLabel: '检查报告',
     fileTypeOptions: [
       { value: 'medical_report', label: '检查报告' },
       { value: 'payment_bill', label: '缴费单据' },
@@ -133,8 +135,13 @@ Page({
 
   onFileTypeChange(e) {
     const { value } = e.detail;
+    const index = parseInt(value);
     const options = this.data.fileTypeOptions;
-    this.setData({ fileType: options[parseInt(value)].value });
+    this.setData({
+      fileType: options[index].value,
+      fileTypeIndex: index,
+      currentFileTypeLabel: options[index].label
+    });
   },
 
   async uploadFile() {

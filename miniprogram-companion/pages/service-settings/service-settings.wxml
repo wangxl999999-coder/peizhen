@@ -9,7 +9,7 @@
         <text class="label">服务城市</text>
         <picker bindchange="onCityChange" value="{{cityIndex}}" range="{{cities}}" range-key="name">
           <view class="picker-value">
-            {{cities[cityIndex]?.name || '请选择城市'}}
+            {{currentCityName || '请选择城市'}}
             <text class="arrow">›</text>
           </view>
         </picker>
@@ -19,7 +19,7 @@
         <text class="label">服务医院</text>
         <picker bindchange="onHospitalChange" value="{{hospitalIndex}}" range="{{hospitals}}" range-key="name">
           <view class="picker-value">
-            {{hospitals[hospitalIndex]?.name || '请选择医院'}}
+            {{currentHospitalName || '请选择医院'}}
             <text class="arrow">›</text>
           </view>
         </picker>

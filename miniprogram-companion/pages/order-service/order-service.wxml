@@ -86,9 +86,9 @@
     <view class="section">
       <view class="section-title">资料上传</view>
       <view class="file-type-row">
-        <picker bindchange="onFileTypeChange" value="{{fileTypeOptions.findIndex(o => o.value === fileType)}}" range="{{fileTypeOptions}}" range-key="label">
+        <picker bindchange="onFileTypeChange" value="{{fileTypeIndex}}" range="{{fileTypeOptions}}" range-key="label">
           <view class="picker-value">
-            {{fileTypeOptions.find(o => o.value === fileType)?.label}}
+            {{currentFileTypeLabel}}
             <text class="arrow">›</text>
           </view>
         </picker>
