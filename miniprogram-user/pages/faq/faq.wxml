@@ -1,0 +1,21 @@
+<view class="faq-page">
+  <view class="faq-list">
+    <view class="faq-item" wx:for="{{faqList}}" wx:key="id">
+      <view class="faq-question" bindtap="toggleExpand" data-id="{{item.id}}">
+        <text class="question-text">Q: {{item.question}}</text>
+        <text class="arrow {{expandedId === item.id ? 'expanded' : ''}}">›</text>
+      </view>
+      <view class="faq-answer" wx:if="{{expandedId === item.id}}">
+        <text>A: {{item.answer}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="contact-card">
+    <view class="contact-title">还有问题？</view>
+    <view class="contact-desc">您可以联系客服获取帮助</view>
+    <view class="contact-btn" bindtap="contactService">
+      <text>📞 联系客服</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,86 @@
+<view class="index-page">
+  <view class="header">
+    <view class="city-select" bindtap="goCitySelect">
+      <text class="city-name">{{currentCity}}</text>
+      <text class="arrow">▼</text>
+    </view>
+    <view class="header-right">
+      <view class="service-btn" bindtap="goService">
+        <text>预约服务</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="container">
+    <swiper class="swiper-banner" indicator-dots autoplay circular indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#fff">
+      <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="goService">
+        <view class="banner-item">
+          <view class="banner-placeholder">{{item.title}}</view>
+        </view>
+      </swiper-item>
+    </swiper>
+
+    <view class="card">
+      <view class="section-title">服务类型</view>
+      <view class="service-grid">
+        <view class="service-item" wx:for="{{services}}" wx:key="id" bindtap="goService" data-type="{{item.type}}">
+          <view class="service-icon-wrap">
+            <view class="service-icon-placeholder">{{item.name}}</view>
+          </view>
+          <text class="service-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{recommendCompanions.length > 0}}">
+      <view class="flex-between">
+        <view class="section-title">推荐陪诊师</view>
+        <text class="more" bindtap="goCompanionList">查看更多 ›</text>
+      </view>
+      <view class="companion-list">
+        <view class="companion-item" wx:for="{{recommendCompanions}}" wx:key="id" bindtap="goCompanionDetail" data-id="{{item.id}}">
+          <view class="companion-avatar-wrap">
+            <view class="companion-avatar-placeholder">{{item.real_name}}</view>
+            <view class="rating-badge">{{item.rating}}</view>
+          </view>
+          <view class="companion-info">
+            <view class="companion-name">{{item.real_name}}</view>
+            <view class="companion-meta">
+              <text>{{item.gender === 1 ? '男' : '女'}} · {{item.age}}岁</text>
+            </view>
+            <view class="companion-stats">
+              <text>{{item.order_count}}单 · 好评{{item.good_rate}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="flex-between">
+        <view class="section-title">常见问题</view>
+        <text class="more" bindtap="goFaq">更多 ›</text>
+      </view>
+      <view class="faq-list">
+        <view class="faq-item" wx:for="{{hotFaqs}}" wx:key="id" bindtap="goFaq">
+          <text class="faq-q">Q: {{item.question}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card quick-actions">
+      <view class="action-item" bindtap="contactService">
+        <view class="action-icon service-icon-placeholder small">客服</view>
+        <text>联系客服</text>
+      </view>
+      <view class="action-item" bindtap="goComplaint">
+        <view class="action-icon service-icon-placeholder small">投诉</view>
+        <text>投诉建议</text>
+      </view>
+      <view class="action-item" bindtap="goFaq">
+        <view class="action-icon service-icon-placeholder small">FAQ</view>
+        <text>常见问题</text>
+      </view>
+    </view>
+  </view>
+</view>

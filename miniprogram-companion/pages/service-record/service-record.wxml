@@ -1,0 +1,33 @@
+<view class="service-record-page">
+  <view class="record-list" wx:if="{{records.length > 0}}">
+    <view class="record-card" wx:for="{{records}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="record-header">
+        <text class="record-service">{{item.service_name}}</text>
+        <text class="record-status status-{{item.status}}">{{item.status_text}}</text>
+      </view>
+      <view class="record-body">
+        <view class="record-row">
+          <text class="row-label">医院</text>
+          <text class="row-value">{{item.hospital_name}}</text>
+        </view>
+        <view class="record-row">
+          <text class="row-label">服务日期</text>
+          <text class="row-value">{{item.service_date}}</text>
+        </view>
+        <view class="record-row">
+          <text class="row-label">用户</text>
+          <text class="row-value">{{item.patient_name}}</text>
+        </view>
+      </view>
+      <view class="record-footer">
+        <text class="record-price">¥{{item.total_price}}</text>
+        <text class="record-time">{{item.create_time}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">📝</view>
+    <text>暂无服务记录</text>
+  </view>
+</view>

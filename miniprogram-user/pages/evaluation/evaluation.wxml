@@ -1,0 +1,41 @@
+<view class="evaluation-page">
+  <view class="card">
+    <view class="section-title">服务评分</view>
+    <view class="rating-section">
+      <view class="stars">
+        <view class="star {{rating >= item ? 'filled' : ''}}" 
+              wx:for="{{[1,2,3,4,5]}}" wx:key="*this"
+              bindtap="setRating" data-rating="{{item}}">★</view>
+      </view>
+      <view class="rating-text">{{rating === 5 ? '非常满意' : rating === 4 ? '满意' : rating === 3 ? '一般' : rating === 2 ? '不满意' : '非常不满意'}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">评价标签</view>
+    <view class="tag-list">
+      <view class="tag-option {{selectedTags.indexOf(item) > -1 ? 'selected' : ''}}"
+            wx:for="{{tagOptions}}" wx:key="*this"
+            bindtap="toggleTag" data-tag="{{item}}">
+        {{item}}
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">评价内容</view>
+    <textarea class="textarea-input" placeholder="请分享您的服务体验..." 
+              value="{{content}}" bindinput="onContentInput" maxlength="500"></textarea>
+  </view>
+
+  <view class="card">
+    <view class="form-item switch-item">
+      <text class="form-label">匿名评价</text>
+      <switch checked="{{isAnonymous}}" bindchange="toggleAnonymous" color="#07C160" />
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <button class="btn btn-primary btn-block" bindtap="submit">提交评价</button>
+  </view>
+</view>

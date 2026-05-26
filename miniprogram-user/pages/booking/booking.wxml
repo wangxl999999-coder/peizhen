@@ -1,0 +1,238 @@
+<view class="booking-page">
+  <view class="steps">
+    <view class="step {{currentStep >= 1 ? 'active' : ''}}">
+      <view class="step-num">1</view>
+      <text>选择服务</text>
+    </view>
+    <view class="step-line {{currentStep >= 2 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 2 ? 'active' : ''}}">
+      <view class="step-num">2</view>
+      <text>选择时间</text>
+    </view>
+    <view class="step-line {{currentStep >= 3 ? 'active' : ''}}"></view>
+    <view class="step {{currentStep >= 3 ? 'active' : ''}}">
+      <view class="step-num">3</view>
+      <text>确认订单</text>
+    </view>
+  </view>
+
+  <view class="step-content" wx:if="{{currentStep === 1}}">
+    <view class="card">
+      <view class="section-title">选择服务类型</view>
+      <view class="service-list">
+        <view class="service-option {{selectedService.id === item.id ? 'selected' : ''}}" 
+              wx:for="{{serviceTypes}}" wx:key="id" 
+              bindtap="selectService" data-id="{{item.id}}">
+          <view class="service-option-header">
+            <view class="service-option-icon">{{item.name}}</view>
+            <view class="service-option-info">
+              <view class="service-option-name">{{item.name}}</view>
+              <view class="service-option-desc">{{item.description}}</view>
+            </view>
+            <view class="service-option-price">¥{{item.base_price}}<text class="price-unit">/{{item.unit}}</text></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">选择城市</view>
+      <view class="city-grid">
+        <view class="city-option {{selectedCity.id === item.id ? 'selected' : ''}}" 
+              wx:for="{{cities}}" wx:key="id"
+              bindtap="selectCity" data-id="{{item.id}}">
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{selectedCity}}">
+      <view class="section-title">选择医院</view>
+      <view class="hospital-list">
+        <view class="hospital-option {{selectedHospital.id === item.id ? 'selected' : ''}}"
+              wx:for="{{hospitals}}" wx:key="id"
+              bindtap="selectHospital" data-id="{{item.id}}">
+          <view class="hospital-name">{{item.name}}</view>
+          <view class="hospital-info">{{item.level}} · {{item.address}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{selectedHospital}}">
+      <view class="section-title">选择科室</view>
+      <view class="department-grid">
+        <view class="dept-option {{selectedDepartment.id === item.id ? 'selected' : ''}}"
+              wx:for="{{departments}}" wx:key="id"
+              bindtap="selectDepartment" data-id="{{item.id}}">
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-btn">
+      <button class="btn btn-primary btn-block" bindtap="nextStep">下一步</button>
+    </view>
+  </view>
+
+  <view class="step-content" wx:if="{{currentStep === 2}}">
+    <view class="card">
+      <view class="section-title">选择服务日期</view>
+      <scroll-view class="date-scroll" scroll-x>
+        <view class="date-list">
+          <view class="date-option {{selectedDate === item.date ? 'selected' : ''}}"
+                wx:for="{{dates}}" wx:key="date"
+                bindtap="selectDate" data-date="{{item.date}}">
+            <view class="date-week">{{item.week}}</view>
+            <view class="date-day">{{item.day}}</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">选择服务时段</view>
+      <view class="time-grid">
+        <view class="time-option {{selectedTimeSlot === item.time ? 'selected' : ''}}"
+              wx:for="{{timeSlots}}" wx:key="id"
+              bindtap="selectTimeSlot" data-time="{{item.time}}" data-isNight="{{item.is_night}}">
+          <view class="time-label">{{item.name}}</view>
+          <view class="time-range">{{item.start_time}}-{{item.end_time}}</view>
+          <view class="time-night" wx:if="{{item.is_night}}">夜间</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card" wx:if="{{companions.length > 0}}">
+      <view class="section-title">选择陪诊师</view>
+      <view class="companion-select-list">
+        <view class="companion-select-item {{selectedCompanion.id === item.id ? 'selected' : ''}}"
+              wx:for="{{companions}}" wx:key="id"
+              bindtap="selectCompanion" data-id="{{item.id}}">
+          <view class="companion-select-avatar">{{item.real_name}}</view>
+          <view class="companion-select-info">
+            <view class="companion-select-header">
+              <text class="companion-select-name">{{item.real_name}}</text>
+              <text class="companion-select-rating">{{item.rating}}分</text>
+            </view>
+            <view class="companion-select-meta">
+              {{item.gender === 1 ? '男' : '女'}} · {{item.age}}岁 · {{item.qualification}}
+            </view>
+            <view class="companion-select-stats">
+              <text>{{item.order_count}}单</text>
+              <text>好评{{item.good_rate}}%</text>
+            </view>
+          </view>
+          <view class="companion-select-check" wx:if="{{selectedCompanion.id === item.id}}">✓</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="footer-btn">
+      <button class="btn btn-outline" bindtap="prevStep">上一步</button>
+      <button class="btn btn-primary flex-1" bindtap="nextStep">下一步</button>
+    </view>
+  </view>
+
+  <view class="step-content" wx:if="{{currentStep === 3}}">
+    <view class="card">
+      <view class="section-title">就诊人信息</view>
+      <view class="patient-select" wx:if="{{patients.length > 0}}">
+        <view class="patient-option {{selectedPatient.id === item.id ? 'selected' : ''}}"
+              wx:for="{{patients}}" wx:key="id"
+              bindtap="selectPatient" data-id="{{item.id}}">
+          <view class="patient-name">{{item.name}}</view>
+          <view class="patient-meta">{{item.gender === 1 ? '男' : '女'}} · {{item.age}}岁 · {{item.relation}}</view>
+          <view class="patient-check" wx:if="{{selectedPatient.id === item.id}}">✓</view>
+        </view>
+      </view>
+      <view class="add-patient-btn" bindtap="goAddPatient">+ 添加就诊人</view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">服务信息</view>
+      <view class="info-row">
+        <text class="info-label">服务类型</text>
+        <text class="info-value">{{selectedService.name}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">医院</text>
+        <text class="info-value">{{selectedHospital.name}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">科室</text>
+        <text class="info-value">{{selectedDepartment.name}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">服务时间</text>
+        <text class="info-value">{{selectedDate}} {{selectedTimeSlot}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">陪诊师</text>
+        <text class="info-value">{{selectedCompanion.real_name}}</text>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">附加服务</view>
+      <view class="extra-options">
+        <view class="extra-option {{isUrgent ? 'selected' : ''}}" bindtap="toggleUrgent">
+          <view class="extra-icon">急</view>
+          <view class="extra-info">
+            <view class="extra-name">加急服务</view>
+            <view class="extra-desc">优先安排，2小时内响应</view>
+          </view>
+          <view class="extra-price">+¥{{selectedService.urgent_fee}}</view>
+        </view>
+        <view class="extra-option {{isRemote ? 'selected' : ''}}" bindtap="toggleRemote">
+          <view class="extra-icon">异</view>
+          <view class="extra-info">
+            <view class="extra-name">异地服务</view>
+            <view class="extra-desc">非本市医院服务</view>
+          </view>
+          <view class="extra-price">+¥{{selectedService.remote_fee}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="section-title">病情描述</view>
+      <textarea class="textarea-input" placeholder="请简要描述您的病情，以便陪诊师提前了解情况" 
+                value="{{symptom}}" bindinput="onSymptomInput" maxlength="500"></textarea>
+    </view>
+
+    <view class="card">
+      <view class="section-title">特殊需求</view>
+      <textarea class="textarea-input" placeholder="如有特殊需求请在此说明（选填）" 
+                value="{{specialReq}}" bindinput="onSpecialReqInput" maxlength="500"></textarea>
+    </view>
+
+    <view class="card price-card">
+      <view class="section-title">费用明细</view>
+      <view class="price-row">
+        <text>基础服务费</text>
+        <text>¥{{priceInfo.base_price}}</text>
+      </view>
+      <view class="price-row" wx:if="{{isUrgent}}">
+        <text>加急费</text>
+        <text>¥{{priceInfo.urgent_fee}}</text>
+      </view>
+      <view class="price-row" wx:if="{{isNight}}">
+        <text>夜间费</text>
+        <text>¥{{priceInfo.night_fee}}</text>
+      </view>
+      <view class="price-row" wx:if="{{isRemote}}">
+        <text>异地费</text>
+        <text>¥{{priceInfo.remote_fee}}</text>
+      </view>
+      <view class="price-row total">
+        <text>合计</text>
+        <text class="price price-value">¥{{priceInfo.total_price}}</text>
+      </view>
+    </view>
+
+    <view class="footer-btn">
+      <button class="btn btn-outline" bindtap="prevStep">上一步</button>
+      <button class="btn btn-primary flex-1" bindtap="submitOrder">提交订单</button>
+    </view>
+  </view>
+</view>

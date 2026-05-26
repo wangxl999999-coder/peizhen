@@ -1,0 +1,81 @@
+<view class="profile-page">
+  <view class="profile-header">
+    <view class="user-info" wx:if="{{userInfo}}">
+      <view class="avatar-wrap">
+        <view class="avatar-placeholder">{{userInfo.nickname || '用户'}}</view>
+      </view>
+      <view class="user-detail">
+        <view class="nickname">{{userInfo.nickname || '用户'}}</view>
+        <view class="phone" wx:if="{{userInfo.phone}}">{{userInfo.phone}}</view>
+      </view>
+    </view>
+    <view class="login-btn" wx:else bindtap="goLogin">
+      <text>点击登录</text>
+    </view>
+  </view>
+
+  <view class="order-section">
+    <view class="section-header">
+      <text class="section-title">我的订单</text>
+      <text class="more" bindtap="goOrderList" data-status="all">全部订单 ›</text>
+    </view>
+    <view class="order-tabs">
+      <view class="order-tab" bindtap="goOrderList" data-status="pending_accept">
+        <view class="order-icon">📝</view>
+        <text>待接单</text>
+      </view>
+      <view class="order-tab" bindtap="goOrderList" data-status="pending_service">
+        <view class="order-icon">⏰</view>
+        <text>待服务</text>
+      </view>
+      <view class="order-tab" bindtap="goOrderList" data-status="in_service">
+        <view class="order-icon">🏥</view>
+        <text>服务中</text>
+      </view>
+      <view class="order-tab" bindtap="goOrderList" data-status="pending_evaluation">
+        <view class="order-icon">⭐</view>
+        <text>待评价</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goPatient">
+      <view class="menu-icon">👥</view>
+      <text class="menu-label">就诊人管理</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goMedicalHistory">
+      <view class="menu-icon">📋</view>
+      <text class="menu-label">就诊记录</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goProfileEdit">
+      <view class="menu-icon">👤</view>
+      <text class="menu-label">个人资料</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goFaq">
+      <view class="menu-icon">❓</view>
+      <text class="menu-label">常见问题</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goComplaint">
+      <view class="menu-icon">📢</view>
+      <text class="menu-label">投诉建议</text>
+      <text class="arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="contactService">
+      <view class="menu-icon">📞</view>
+      <text class="menu-label">联系客服</text>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <view class="logout-section" wx:if="{{userInfo}}">
+    <view class="logout-btn" bindtap="logout">退出登录</view>
+  </view>
+</view>

@@ -1,0 +1,65 @@
+<view class="patient-edit-page">
+  <view class="form-card">
+    <view class="form-item">
+      <text class="form-label">姓名</text>
+      <input class="form-input" placeholder="请输入姓名" value="{{form.name}}" 
+             bindinput="onInput" data-field="name" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">性别</text>
+      <picker mode="selector" range="{{['男', '女']}}" value="{{genderIndex}}" bindchange="selectGender">
+        <view class="form-input">
+          {{genderIndex === 0 ? '男' : '女'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">年龄</text>
+      <input class="form-input" type="number" placeholder="请输入年龄" value="{{form.age}}" 
+             bindinput="onInput" data-field="age" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">身份证号</text>
+      <input class="form-input" placeholder="请输入身份证号" value="{{form.id_card}}" 
+             bindinput="onInput" data-field="id_card" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">手机号</text>
+      <input class="form-input" type="number" placeholder="请输入手机号" value="{{form.phone}}" 
+             bindinput="onInput" data-field="phone" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">与本人关系</text>
+      <picker mode="selector" range="{{relationOptions}}" value="{{relationIndex}}" bindchange="selectRelation">
+        <view class="form-input">
+          {{form.relation || '请选择'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">就诊卡号</text>
+      <input class="form-input" placeholder="选填" value="{{form.medical_card}}" 
+             bindinput="onInput" data-field="medical_card" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">过敏史</text>
+      <input class="form-input" placeholder="选填" value="{{form.allergy}}" 
+             bindinput="onInput" data-field="allergy" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">病史</text>
+      <input class="form-input" placeholder="选填" value="{{form.medical_history}}" 
+             bindinput="onInput" data-field="medical_history" />
+    </view>
+    <view class="form-item switch-item">
+      <text class="form-label">设为默认就诊人</text>
+      <switch checked="{{form.is_default}}" bindchange="toggleDefault" color="#07C160" />
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <button class="btn btn-primary btn-block" bindtap="submit">保存</button>
+  </view>
+</view>

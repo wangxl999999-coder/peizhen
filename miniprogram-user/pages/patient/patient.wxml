@@ -1,0 +1,55 @@
+<view class="patient-page">
+  <view class="patient-list" wx:if="{{patients.length > 0}}">
+    <view class="patient-card" wx:for="{{patients}}" wx:key="id">
+      <view class="patient-header">
+        <view class="patient-info">
+          <text class="patient-name">{{item.name}}</text>
+          <view class="tag tag-primary" wx:if="{{item.is_default}}">默认</view>
+        </view>
+        <view class="patient-actions">
+          <text class="action-btn" bindtap="goEdit" data-id="{{item.id}}">编辑</text>
+        </view>
+      </view>
+      <view class="patient-detail">
+        <view class="detail-row">
+          <text class="detail-label">性别</text>
+          <text class="detail-value">{{item.gender === 1 ? '男' : '女'}} · {{item.age}}岁</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">关系</text>
+          <text class="detail-value">{{item.relation}}</text>
+        </view>
+        <view class="detail-row">
+          <text class="detail-label">电话</text>
+          <text class="detail-value">{{item.phone}}</text>
+        </view>
+        <view class="detail-row" wx:if="{{item.id_card}}">
+          <text class="detail-label">身份证</text>
+          <text class="detail-value">{{item.id_card}}</text>
+        </view>
+        <view class="detail-row" wx:if="{{item.medical_card}}">
+          <text class="detail-label">就诊卡号</text>
+          <text class="detail-value">{{item.medical_card}}</text>
+        </view>
+        <view class="detail-row" wx:if="{{item.allergy}}">
+          <text class="detail-label">过敏史</text>
+          <text class="detail-value">{{item.allergy}}</text>
+        </view>
+      </view>
+      <view class="patient-footer" wx:if="{{!item.is_default}}">
+        <text class="footer-btn" bindtap="setDefault" data-id="{{item.id}}">设为默认</text>
+        <text class="footer-btn delete" bindtap="deletePatient" data-id="{{item.id}}">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">👥</view>
+    <text>暂无就诊人</text>
+    <view class="btn btn-primary" bindtap="goAdd">添加就诊人</view>
+  </view>
+
+  <view class="add-btn" wx:if="{{patients.length > 0}}" bindtap="goAdd">
+    + 添加就诊人
+  </view>
+</view>

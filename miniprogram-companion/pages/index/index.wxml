@@ -1,0 +1,83 @@
+<view class="companion-index" wx:if="{{userInfo}}">
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="user-card">
+      <view class="user-avatar">{{userInfo.real_name}}</view>
+      <view class="user-info">
+        <view class="user-name">{{userInfo.real_name}}</view>
+        <view class="user-meta">
+          <text>{{userInfo.gender === 1 ? '男' : '女'}} · {{userInfo.age}}岁</text>
+        </view>
+        <view class="user-rating">
+          <text class="rating-score">{{userInfo.rating}}</text>
+          <text class="rating-label">分</text>
+          <text class="order-count">累计{{userInfo.order_count}}单</text>
+        </view>
+      </view>
+      <view class="status-tag {{userInfo.online_status === 1 ? 'online' : 'offline'}}">
+        {{userInfo.online_status === 1 ? '在线' : '离线'}}
+      </view>
+    </view>
+  </view>
+
+  <view class="statistics-card" wx:if="{{statistics}}">
+    <view class="stat-item" bindtap="goOrderList">
+      <text class="stat-value">{{statistics.today_order_count}}</text>
+      <text class="stat-label">今日订单</text>
+    </view>
+    <view class="stat-item" bindtap="goIncome">
+      <text class="stat-value">¥{{statistics.month_income}}</text>
+      <text class="stat-label">本月收入</text>
+    </view>
+    <view class="stat-item" bindtap="goServiceRecord">
+      <text class="stat-value">{{statistics.total_orders}}</text>
+      <text class="stat-label">累计订单</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{statistics.good_rate}}%</text>
+      <text class="stat-label">好评率</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">今日订单</text>
+      <text class="section-more" bindtap="goOrderList">查看全部 ›</text>
+    </view>
+
+    <view class="order-list" wx:if="{{todayOrders.length > 0}}">
+      <view class="order-card" wx:for="{{todayOrders}}" wx:key="id" bindtap="goOrderDetail" data-id="{{item.id}}">
+        <view class="order-header">
+          <text class="order-status status-{{item.status}}">{{item.status_text}}</text>
+          <text class="order-price">¥{{item.total_price}}</text>
+        </view>
+        <view class="order-body">
+          <view class="order-row">
+            <text class="row-label">服务</text>
+            <text class="row-value">{{item.service_name}}</text>
+          </view>
+          <view class="order-row">
+            <text class="row-label">医院</text>
+            <text class="row-value">{{item.hospital_name}}</text>
+          </view>
+          <view class="order-row">
+            <text class="row-label">时间</text>
+            <text class="row-value">{{item.service_date}} {{item.start_time}}</text>
+          </view>
+        </view>
+        <view class="order-footer" catchtap="">
+          <button class="btn btn-primary" wx:if="{{item.status === 'pending_accept'}}" 
+                  bindtap="acceptOrder" data-id="{{item.id}}">接单</button>
+          <button class="btn btn-primary" wx:if="{{item.status === 'pending_service'}}" 
+                  bindtap="startService" data-id="{{item.id}}">开始服务</button>
+          <button class="btn btn-primary" wx:if="{{item.status === 'in_service'}}" 
+                  bindtap="completeService" data-id="{{item.id}}">完成服务</button>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:else>
+      <text>今日暂无订单</text>
+    </view>
+  </view>
+</view>

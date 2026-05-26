@@ -1,0 +1,257 @@
+.order-detail-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 40rpx;
+}
+
+.status-header {
+  padding: 60rpx 30rpx;
+  text-align: center;
+}
+
+.status-header.status-pending_accept {
+  background: linear-gradient(135deg, #faad14 0%, #ffc53d 100%);
+}
+
+.status-header.status-pending_service {
+  background: linear-gradient(135deg, #1890ff 0%, #40a9ff 100%);
+}
+
+.status-header.status-in_service {
+  background: linear-gradient(135deg, #07C160 0%, #06AD56 100%);
+}
+
+.status-header.status-pending_evaluation {
+  background: linear-gradient(135deg, #722ed1 0%, #9254de 100%);
+}
+
+.status-header.status-completed {
+  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+}
+
+.status-header.status-cancelled {
+  background: linear-gradient(135deg, #999 0%, #bfbfbf 100%);
+}
+
+.status-text {
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+}
+
+.info-label {
+  color: #999;
+}
+
+.info-value {
+  color: #333;
+  max-width: 400rpx;
+  text-align: right;
+}
+
+.info-row.total {
+  border-top: 1rpx solid #f0f0f0;
+  padding-top: 20rpx;
+  margin-top: 10rpx;
+}
+
+.copyable {
+  color: #07C160;
+}
+
+.companion-info-card {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.companion-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.companion-detail {
+  flex: 1;
+}
+
+.companion-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.companion-meta {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+}
+
+.companion-qualification {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 4rpx;
+}
+
+.companion-rating {
+  font-size: 24rpx;
+  color: #faad14;
+}
+
+.companion-actions {
+  display: flex;
+  gap: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+  margin-top: 20rpx;
+}
+
+.action-btn {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #07C160;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+}
+
+.action-buttons .btn {
+  flex: 1;
+  min-width: calc(50% - 10rpx);
+}
+
+.dialog-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialog {
+  width: 600rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.dialog-title {
+  padding: 30rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.dialog-content {
+  padding: 30rpx;
+}
+
+.dialog-textarea {
+  width: 100%;
+  height: 160rpx;
+  padding: 20rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.dialog-buttons {
+  display: flex;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.dialog-btn {
+  flex: 1;
+  padding: 30rpx;
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.dialog-btn.cancel {
+  color: #999;
+  border-right: 1rpx solid #f0f0f0;
+}
+
+.dialog-btn.confirm {
+  color: #07C160;
+  font-weight: bold;
+}
+
+.date-scroll {
+  white-space: nowrap;
+  margin: 10rpx 0;
+}
+
+.date-list {
+  display: inline-flex;
+}
+
+.mini-date {
+  padding: 12rpx 20rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+  font-size: 24rpx;
+}
+
+.mini-date.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.1);
+  color: #07C160;
+}
+
+.time-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin: 10rpx 0;
+}
+
+.mini-time {
+  padding: 12rpx 24rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.mini-time.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.1);
+  color: #07C160;
+}
+
+.form-label {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}

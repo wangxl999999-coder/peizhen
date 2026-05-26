@@ -1,0 +1,136 @@
+.order-list-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.tabs {
+  background: #fff;
+  padding: 10rpx 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tabs-scroll {
+  white-space: nowrap;
+}
+
+.tab-item {
+  display: inline-block;
+  padding: 20rpx 30rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.tab-item.active {
+  color: #07C160;
+  font-weight: bold;
+  position: relative;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 4rpx;
+  background: #07C160;
+  border-radius: 2rpx;
+}
+
+.order-list {
+  padding: 20rpx;
+}
+
+.order-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.order-info {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.order-no {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.order-status {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.order-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.order-row {
+  display: flex;
+  font-size: 26rpx;
+}
+
+.row-label {
+  width: 140rpx;
+  color: #999;
+}
+
+.row-value {
+  flex: 1;
+  color: #333;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.order-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #07C160;
+}
+
+.order-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.empty {
+  padding: 100rpx 60rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty text {
+  display: block;
+  color: #999;
+  font-size: 28rpx;
+}

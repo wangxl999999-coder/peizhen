@@ -1,0 +1,21 @@
+<view class="complaint-page">
+  <view class="card">
+    <view class="section-title">投诉原因</view>
+    <textarea class="textarea-input" placeholder="请简要描述您遇到的问题" 
+              value="{{reason}}" bindinput="onReasonInput" maxlength="100"></textarea>
+  </view>
+
+  <view class="card">
+    <view class="section-title">详细说明</view>
+    <textarea class="textarea-input large" placeholder="请详细描述您的问题，以便我们更好地处理" 
+              value="{{description}}" bindinput="onDescriptionInput" maxlength="500"></textarea>
+  </view>
+
+  <view class="tip">
+    <text>我们会在1-3个工作日内处理您的投诉，请保持手机畅通</text>
+  </view>
+
+  <view class="submit-section">
+    <button class="btn btn-primary btn-block" bindtap="submit">提交投诉</button>
+  </view>
+</view>

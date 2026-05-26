@@ -1,0 +1,58 @@
+<view class="income-page" wx:if="{{incomeData}}">
+  <view class="income-header">
+    <view class="header-bg"></view>
+    <view class="income-card">
+      <view class="income-label">本月收入</view>
+      <view class="income-amount">¥{{incomeData.month_income}}</view>
+      <view class="income-detail">
+        <view class="detail-item">
+          <text class="detail-value">{{incomeData.month_orders}}</text>
+          <text class="detail-label">本月订单</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-value">¥{{incomeData.available_amount}}</text>
+          <text class="detail-label">可提现</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-value">¥{{incomeData.frozen_amount}}</text>
+          <text class="detail-label">冻结中</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="total-card">
+    <view class="total-item">
+      <text class="total-value">¥{{incomeData.total_income}}</text>
+      <text class="total-label">累计收入</text>
+    </view>
+    <view class="total-item">
+      <text class="total-value">{{incomeData.total_orders}}</text>
+      <text class="total-label">累计订单</text>
+    </view>
+    <view class="total-item">
+      <text class="total-value">¥{{incomeData.total_withdrawn}}</text>
+      <text class="total-label">已提现</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">月度收入</view>
+    <view class="month-list" wx:if="{{monthList.length > 0}}">
+      <view class="month-item" wx:for="{{monthList}}" wx:key="month">
+        <view class="month-info">
+          <text class="month-name">{{item.month}}</text>
+          <text class="month-orders">{{item.order_count}}单</text>
+        </view>
+        <text class="month-amount">¥{{item.income}}</text>
+      </view>
+    </view>
+    <view class="empty" wx:else>
+      <text>暂无数据</text>
+    </view>
+  </view>
+
+  <view class="withdraw-section">
+    <button class="btn btn-primary btn-block" bindtap="withdraw">申请提现</button>
+  </view>
+</view>

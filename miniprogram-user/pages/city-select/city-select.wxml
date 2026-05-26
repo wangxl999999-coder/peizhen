@@ -1,0 +1,31 @@
+<view class="city-select-page">
+  <view class="current-city">
+    <text class="label">当前城市</text>
+    <text class="city">{{currentCity}}</text>
+  </view>
+
+  <view class="hot-section" wx:if="{{hotCities.length > 0}}">
+    <view class="section-title">热门城市</view>
+    <view class="city-grid">
+      <view class="city-item" wx:for="{{hotCities}}" wx:key="id" 
+            bindtap="selectCity" data-city="{{item.name}}">
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <view class="all-section">
+    <view class="section-title">全部城市</view>
+    <block wx:for="{{allCities}}" wx:for-item="cities" wx:key="letter">
+      <view class="letter-group">
+        <view class="letter">{{index}}</view>
+        <view class="city-list">
+          <view class="city-item" wx:for="{{cities}}" wx:for-item="city" wx:key="id"
+                bindtap="selectCity" data-city="{{city.name}}">
+            {{city.name}}
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

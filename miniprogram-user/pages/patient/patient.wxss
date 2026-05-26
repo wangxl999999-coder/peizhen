@@ -1,0 +1,109 @@
+.patient-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 20rpx;
+  padding-bottom: 160rpx;
+}
+
+.patient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.patient-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.patient-info {
+  display: flex;
+  align-items: center;
+}
+
+.patient-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 16rpx;
+}
+
+.action-btn {
+  color: #07C160;
+  font-size: 26rpx;
+}
+
+.detail-row {
+  display: flex;
+  padding: 10rpx 0;
+}
+
+.detail-label {
+  width: 160rpx;
+  color: #999;
+  font-size: 26rpx;
+}
+
+.detail-value {
+  flex: 1;
+  color: #333;
+  font-size: 26rpx;
+}
+
+.patient-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30rpx;
+  padding-top: 20rpx;
+  margin-top: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.footer-btn {
+  font-size: 26rpx;
+  color: #07C160;
+}
+
+.footer-btn.delete {
+  color: #ff4d4f;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 30rpx;
+  background: #fff;
+  color: #07C160;
+  font-size: 30rpx;
+  box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.empty {
+  padding: 100rpx 60rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty text {
+  display: block;
+  color: #999;
+  font-size: 28rpx;
+  margin-bottom: 40rpx;
+}

@@ -1,0 +1,212 @@
+<view class="order-detail-page" wx:if="{{order}}">
+  <view class="status-header status-{{order.status}}">
+    <view class="status-text">{{order.statusText}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">就诊人信息</view>
+    <view class="info-row" wx:if="{{order.patient_info}}">
+      <text class="info-label">姓名</text>
+      <text class="info-value">{{order.patient_info.name}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.patient_info}}">
+      <text class="info-label">性别</text>
+      <text class="info-value">{{order.patient_info.gender === 1 ? '男' : '女'}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.patient_info}}">
+      <text class="info-label">年龄</text>
+      <text class="info-value">{{order.patient_info.age}}岁</text>
+    </view>
+    <view class="info-row" wx:if="{{order.patient_info}}">
+      <text class="info-label">关系</text>
+      <text class="info-value">{{order.patient_info.relation}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">服务信息</view>
+    <view class="info-row">
+      <text class="info-label">服务类型</text>
+      <text class="info-value">{{order.service_name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">医院</text>
+      <text class="info-value">{{order.hospital_name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">地址</text>
+      <text class="info-value">{{order.hospital_address}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">科室</text>
+      <text class="info-value">{{order.department_name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">服务时间</text>
+      <text class="info-value">{{order.service_date}} {{order.time_slot}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{order.companion_info}}">
+    <view class="section-title">陪诊师</view>
+    <view class="companion-info-card">
+      <view class="companion-avatar">{{order.companion_info.real_name}}</view>
+      <view class="companion-detail">
+        <view class="companion-name">{{order.companion_info.real_name}}</view>
+        <view class="companion-meta">
+          <text>{{order.companion_info.gender === 1 ? '男' : '女'}} · {{order.companion_info.age}}岁</text>
+        </view>
+        <view class="companion-qualification">{{order.companion_info.qualification}}</view>
+        <view class="companion-rating">评分: {{order.companion_info.rating}}分</view>
+      </view>
+    </view>
+    <view class="companion-actions" wx:if="{{order.status === 'pending_service' || order.status === 'in_service'}}">
+      <view class="action-btn" bindtap="callCompanion">联系陪诊师</view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{order.symptom || order.special_req}}">
+    <view class="section-title">订单备注</view>
+    <view class="info-row" wx:if="{{order.symptom}}">
+      <text class="info-label">病情描述</text>
+      <text class="info-value">{{order.symptom}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.special_req}}">
+      <text class="info-label">特殊需求</text>
+      <text class="info-value">{{order.special_req}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{order.post_service}}">
+    <view class="section-title">诊后服务</view>
+    <view class="info-row" wx:if="{{order.post_service.medical_advice}}">
+      <text class="info-label">医嘱</text>
+      <text class="info-value">{{order.post_service.medical_advice}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.post_service.recheck_time}}">
+      <text class="info-label">复诊时间</text>
+      <text class="info-value">{{order.post_service.recheck_time}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.post_service.medication_list}}">
+      <text class="info-label">用药清单</text>
+      <text class="info-value">{{order.post_service.medication_list}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">费用明细</view>
+    <view class="info-row">
+      <text class="info-label">基础服务费</text>
+      <text class="info-value">¥{{order.base_price}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.is_urgent}}">
+      <text class="info-label">加急费</text>
+      <text class="info-value">¥{{order.urgent_fee}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.is_night}}">
+      <text class="info-label">夜间费</text>
+      <text class="info-value">¥{{order.night_fee}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.is_remote}}">
+      <text class="info-label">异地费</text>
+      <text class="info-value">¥{{order.remote_fee}}</text>
+    </view>
+    <view class="info-row total">
+      <text class="info-label">实付金额</text>
+      <text class="price price-value">¥{{order.total_price}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">订单信息</view>
+    <view class="info-row" bindtap="copyOrderNo">
+      <text class="info-label">订单编号</text>
+      <text class="info-value copyable">{{order.order_no}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">下单时间</text>
+      <text class="info-value">{{order.create_time}}</text>
+    </view>
+  </view>
+
+  <view class="action-buttons">
+    <view class="btn btn-outline" wx:if="{{order.status === 'pending_accept' || order.status === 'pending_service'}}" bindtap="showCancelDialog">
+      取消订单
+    </view>
+    <view class="btn btn-outline" wx:if="{{order.status === 'pending_accept' || order.status === 'pending_service'}}" bindtap="showRescheduleDialog">
+      申请改期
+    </view>
+    <view class="btn btn-primary" wx:if="{{order.status === 'pending_evaluation'}}" bindtap="goEvaluation">
+      服务评价
+    </view>
+    <view class="btn btn-outline" wx:if="{{order.status === 'completed' || order.status === 'pending_evaluation'}}" bindtap="showAfterSalesDialog" data-type="refund">
+      申请退款
+    </view>
+    <view class="btn btn-outline" wx:if="{{order.status !== 'cancelled'}}" bindtap="showAfterSalesDialog" data-type="complaint">
+      投诉建议
+    </view>
+    <view class="btn btn-outline" wx:if="{{order.status !== 'cancelled'}}" bindtap="contactService">
+      联系客服
+    </view>
+  </view>
+
+  <view class="dialog-mask" wx:if="{{showCancel}}" bindtap="hideCancelDialog">
+    <view class="dialog" catchtap="">
+      <view class="dialog-title">取消订单</view>
+      <view class="dialog-content">
+        <textarea class="dialog-textarea" placeholder="请输入取消原因" value="{{cancelReason}}" bindinput="onCancelReasonInput"></textarea>
+      </view>
+      <view class="dialog-buttons">
+        <view class="dialog-btn cancel" bindtap="hideCancelDialog">取消</view>
+        <view class="dialog-btn confirm" bindtap="confirmCancel">确认</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="dialog-mask" wx:if="{{showReschedule}}" bindtap="hideRescheduleDialog">
+    <view class="dialog" catchtap="">
+      <view class="dialog-title">申请改期</view>
+      <view class="dialog-content">
+        <view class="form-label">选择新日期</view>
+        <scroll-view scroll-x class="date-scroll">
+          <view class="date-list">
+            <view class="mini-date {{selectedDate === item ? 'selected' : ''}}" 
+                  wx:for="{{dates}}" wx:key="*this" 
+                  bindtap="selectDate" data-date="{{item}}">
+              {{item}}
+            </view>
+          </view>
+        </scroll-view>
+        <view class="form-label mt-20">选择时间段</view>
+        <view class="time-list">
+          <view class="mini-time {{selectedTimeSlot === item.time ? 'selected' : ''}}"
+                wx:for="{{timeSlots}}" wx:key="id"
+                bindtap="selectTimeSlot" data-time="{{item.start_time}}-{{item.end_time}}">
+            {{item.start_time}}-{{item.end_time}}
+          </view>
+        </view>
+        <textarea class="dialog-textarea" placeholder="改期原因（选填）" value="{{rescheduleReason}}" bindinput="onRescheduleReasonInput"></textarea>
+      </view>
+      <view class="dialog-buttons">
+        <view class="dialog-btn cancel" bindtap="hideRescheduleDialog">取消</view>
+        <view class="dialog-btn confirm" bindtap="confirmReschedule">确认</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="dialog-mask" wx:if="{{showAfterSales}}" bindtap="hideAfterSalesDialog">
+    <view class="dialog" catchtap="">
+      <view class="dialog-title">{{afterSalesType === 'refund' ? '申请退款' : '投诉建议'}}</view>
+      <view class="dialog-content">
+        <textarea class="dialog-textarea" placeholder="请输入{{afterSalesType === 'refund' ? '退款' : '投诉'}}原因" 
+                  value="{{afterSalesReason}}" bindinput="onAfterSalesReasonInput"></textarea>
+        <textarea class="dialog-textarea mt-20" placeholder="详细描述（选填）" 
+                  value="{{afterSalesDesc}}" bindinput="onAfterSalesDescInput"></textarea>
+      </view>
+      <view class="dialog-buttons">
+        <view class="dialog-btn cancel" bindtap="hideAfterSalesDialog">取消</view>
+        <view class="dialog-btn confirm" bindtap="submitAfterSales">提交</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,15 @@
+{
+  "name": "peizhen-platform",
+  "version": "1.0.0",
+  "description": "陪诊服务平台 - 包含用户端小程序、陪诊师端小程序、管理后台",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:admin": "cd admin && npm run dev",
+    "build:server": "cd server && npm run build",
+    "build:admin": "cd admin && npm run build"
+  },
+  "keywords": ["peizhen", "wechat-miniprogram", "healthcare"],
+  "author": "peizhen-team",
+  "license": "MIT"
+}

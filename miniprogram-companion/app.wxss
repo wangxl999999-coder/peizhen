@@ -1,0 +1,124 @@
+.container {
+  min-height: 100vh;
+  background: #f5f5f5;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  margin: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  border: none;
+  line-height: 1.4;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #07C160 0%, #06AD56 100%);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+  color: #fff;
+}
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.empty {
+  padding: 100rpx 60rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty text {
+  display: block;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.loading {
+  padding: 40rpx;
+  text-align: center;
+  color: #999;
+}
+
+.tag {
+  display: inline-block;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+
+.tag-primary {
+  background: rgba(7, 193, 96, 0.1);
+  color: #07C160;
+}
+
+.tag-warning {
+  background: rgba(250, 173, 20, 0.1);
+  color: #faad14;
+}
+
+.tag-danger {
+  background: rgba(255, 77, 79, 0.1);
+  color: #ff4d4f;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.status-pending_accept {
+  background: #fff7e6;
+  color: #faad14;
+}
+
+.status-pending_service {
+  background: #e6f7ff;
+  color: #1890ff;
+}
+
+.status-in_service {
+  background: #f6ffed;
+  color: #07C160;
+}
+
+.status-pending_evaluation {
+  background: #fff2e8;
+  color: #ff7a45;
+}
+
+.status-completed {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.status-cancelled {
+  background: #fff1f0;
+  color: #ff4d4f;
+}

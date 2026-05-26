@@ -1,0 +1,38 @@
+<view class="companion-list-page">
+  <view class="sort-tabs">
+    <view class="sort-tab {{sort === 'rating' ? 'active' : ''}}" bindtap="changeSort" data-sort="rating">
+      评分优先
+    </view>
+    <view class="sort-tab {{sort === 'order_count' ? 'active' : ''}}" bindtap="changeSort" data-sort="order_count">
+      接单最多
+    </view>
+    <view class="sort-tab {{sort === 'distance' ? 'active' : ''}}" bindtap="changeSort" data-sort="distance">
+      距离最近
+    </view>
+  </view>
+
+  <view class="companion-list">
+    <view class="companion-card" wx:for="{{companions}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="companion-avatar-wrap">
+        <view class="companion-avatar">{{item.real_name}}</view>
+        <view class="rating-badge">{{item.rating}}分</view>
+      </view>
+      <view class="companion-info">
+        <view class="companion-header">
+          <text class="companion-name">{{item.real_name}}</text>
+          <text class="companion-gender">{{item.gender === 1 ? '男' : '女'}} · {{item.age}}岁</text>
+        </view>
+        <view class="companion-qualification">{{item.qualification}}</view>
+        <view class="companion-stats">
+          <text>已服务{{item.order_count}}单</text>
+          <text>好评率{{item.good_rate}}%</text>
+        </view>
+        <view class="companion-intro" wx:if="{{item.intro}}">{{item.intro}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{companions.length === 0 && !loading}}">
+    <text>暂无陪诊师</text>
+  </view>
+</view>

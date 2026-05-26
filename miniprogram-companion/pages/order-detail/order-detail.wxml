@@ -1,0 +1,103 @@
+<view class="order-detail-page" wx:if="{{order}}">
+  <view class="status-card">
+    <view class="status-text status-{{order.status}}">{{order.status_text}}</view>
+    <view class="status-tip" wx:if="{{order.status === 'pending_accept'}}">请尽快接单</view>
+    <view class="status-tip" wx:if="{{order.status === 'pending_service'}}">服务即将开始，请提前联系用户</view>
+    <view class="status-tip" wx:if="{{order.status === 'in_service'}}">服务进行中</view>
+    <view class="status-tip" wx:if="{{order.status === 'completed'}}">订单已完成</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">服务信息</view>
+    <view class="info-row">
+      <text class="info-label">服务类型</text>
+      <text class="info-value">{{order.service_name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">服务时间</text>
+      <text class="info-value">{{order.service_date}} {{order.start_time}}-{{order.end_time}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">服务地点</text>
+      <text class="info-value">{{order.hospital_name}} {{order.department_name}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.address}}">
+      <text class="info-label">详细地址</text>
+      <text class="info-value">{{order.address}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">用户信息</view>
+    <view class="info-row">
+      <text class="info-label">就诊人</text>
+      <text class="info-value">{{order.patient_name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">联系电话</text>
+      <view class="info-value phone-wrap">
+        <text>{{order.user_phone}}</text>
+        <text class="call-btn" bindtap="callUser">📞</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{order.symptom_description || order.special_requirements}}">
+    <view class="section-title">服务需求</view>
+    <view class="info-row" wx:if="{{order.symptom_description}}">
+      <text class="info-label">病情描述</text>
+      <text class="info-value">{{order.symptom_description}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.special_requirements}}">
+      <text class="info-label">特殊需求</text>
+      <text class="info-value">{{order.special_requirements}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">费用明细</view>
+    <view class="info-row">
+      <text class="info-label">基础费用</text>
+      <text class="info-value">¥{{order.base_price}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.urgent_fee > 0}}">
+      <text class="info-label">加急费</text>
+      <text class="info-value">¥{{order.urgent_fee}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.night_fee > 0}}">
+      <text class="info-label">夜间费</text>
+      <text class="info-value">¥{{order.night_fee}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.remote_fee > 0}}">
+      <text class="info-label">异地费</text>
+      <text class="info-value">¥{{order.remote_fee}}</text>
+    </view>
+    <view class="info-row total-row">
+      <text class="info-label">合计</text>
+      <text class="info-value price">¥{{order.total_price}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{order.medical_advice}}">
+    <view class="section-title">诊后服务</view>
+    <view class="info-row" wx:if="{{order.medical_advice}}">
+      <text class="info-label">医嘱</text>
+      <text class="info-value">{{order.medical_advice}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.medication_list && order.medication_list.length > 0}}">
+      <text class="info-label">用药清单</text>
+      <text class="info-value">{{order.medication_list}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.recheck_time}}">
+      <text class="info-label">复诊时间</text>
+      <text class="info-value">{{order.recheck_time}}</text>
+    </view>
+  </view>
+
+  <view class="action-bar">
+    <button class="btn btn-secondary" bindtap="callUser">联系用户</button>
+    <button class="btn btn-primary" wx:if="{{order.status === 'pending_accept'}}" bindtap="acceptOrder">接单</button>
+    <button class="btn btn-primary" wx:if="{{order.status === 'pending_service'}}" bindtap="startService">开始服务</button>
+    <button class="btn btn-primary" wx:if="{{order.status === 'in_service'}}" bindtap="completeService">完成服务</button>
+  </view>
+</view>

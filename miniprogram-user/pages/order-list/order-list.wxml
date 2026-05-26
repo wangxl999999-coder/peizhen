@@ -1,0 +1,38 @@
+<view class="order-list-page">
+  <view class="tabs">
+    <view class="tab {{activeTab === item.key ? 'active' : ''}}" 
+          wx:for="{{tabs}}" wx:key="key"
+          bindtap="switchTab" data-key="{{item.key}}">
+      {{item.label}}
+    </view>
+  </view>
+
+  <view class="order-list" wx:if="{{orders.length > 0}}">
+    <view class="order-card" wx:for="{{orders}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="order-header">
+        <text class="order-no">{{item.order_no}}</text>
+        <text class="status-badge status-{{item.status}}">{{item.statusText}}</text>
+      </view>
+      <view class="order-content">
+        <view class="order-companion" wx:if="{{item.companion_info}}">
+          <view class="companion-avatar">{{item.companion_info.real_name}}</view>
+          <view class="companion-name">{{item.companion_info.real_name}}</view>
+        </view>
+        <view class="order-info">
+          <view class="order-service">{{item.service_name}}</view>
+          <view class="order-hospital">{{item.hospital_name}} · {{item.department_name}}</view>
+          <view class="order-time">{{item.service_date}} {{item.time_slot}}</view>
+        </view>
+      </view>
+      <view class="order-footer">
+        <text class="order-price">¥{{item.total_price}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">📋</view>
+    <text>暂无订单</text>
+    <view class="btn btn-primary" bindtap="goBooking">立即预约</view>
+  </view>
+</view>

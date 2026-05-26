@@ -1,0 +1,95 @@
+<view class="companion-detail-page" wx:if="{{companion}}">
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="companion-info-card">
+      <view class="companion-avatar-wrap">
+        <view class="companion-avatar">{{companion.real_name}}</view>
+        <view class="online-status {{companion.online_status === 1 ? 'online' : ''}}"></view>
+      </view>
+      <view class="companion-info">
+        <view class="companion-name">{{companion.real_name}}</view>
+        <view class="companion-meta">
+          <text>{{companion.gender === 1 ? '男' : '女'}} · {{companion.age}}岁</text>
+          <text>{{companion.city}}</text>
+        </view>
+        <view class="companion-rating">
+          <text class="rating-score">{{companion.rating}}</text>
+          <text class="rating-label">分</text>
+          <text class="order-count">{{companion.order_count}}单</text>
+          <text class="good-rate">好评{{companion.good_rate}}%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">资质信息</view>
+    <view class="qualification-item">
+      <text class="qualification-label">资质证书</text>
+      <text class="qualification-value">{{companion.qualification}}</text>
+    </view>
+    <view class="qualification-item" wx:if="{{companion.qualification_no}}">
+      <text class="qualification-label">证书编号</text>
+      <text class="qualification-value">{{companion.qualification_no}}</text>
+    </view>
+    <view class="qualification-item">
+      <text class="qualification-label">从业年限</text>
+      <text class="qualification-value">{{companion.experience}}年</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{companion.skills && companion.skills.length > 0}}">
+    <view class="section-title">擅长技能</view>
+    <view class="skill-list">
+      <view class="skill-tag" wx:for="{{companion.skills}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{companion.intro}}">
+    <view class="section-title">个人简介</view>
+    <view class="intro-text">{{companion.intro}}</view>
+  </view>
+
+  <view class="card" wx:if="{{companion.cases && companion.cases.length > 0}}">
+    <view class="section-title">服务案例 ({{companion.cases.length}})</view>
+    <view class="case-item" wx:for="{{companion.cases}}" wx:key="id">
+      <view class="case-header">
+        <text class="case-title">{{item.title}}</text>
+        <text class="case-date">{{item.case_date}}</text>
+      </view>
+      <view class="case-content">{{item.content}}</view>
+      <view class="case-images" wx:if="{{item.imageList && item.imageList.length > 0}}">
+        <image wx:for="{{item.imageList}}" wx:for-item="img" wx:key="*this"
+               src="{{img}}" mode="aspectFill" 
+               bindtap="previewImage" data-urls="{{item.imageList}}" data-current="{{img}}"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">用户评价 ({{companion.evaluation_count}})</view>
+    <view class="evaluation-item" wx:for="{{companion.evaluations}}" wx:key="id">
+      <view class="evaluation-header">
+        <view class="user-info">
+          <view class="user-avatar" wx:if="{{!item.is_anonymous}}">{{item.nickname}}</view>
+          <view class="user-avatar anonymous" wx:else>匿名</view>
+          <text class="user-name" wx:if="{{!item.is_anonymous}}">{{item.nickname}}</text>
+          <text class="user-name" wx:else>匿名用户</text>
+        </view>
+        <view class="rating">
+          <text wx:for="{{5}}" wx:for-index="i" wx:key="i" class="star {{i < item.rating ? 'filled' : ''}}">★</text>
+        </view>
+      </view>
+      <view class="evaluation-content">{{item.content}}</view>
+      <view class="evaluation-date">{{item.create_time}}</view>
+    </view>
+    <view class="empty" wx:if="{{companion.evaluations.length === 0}}">
+      <text>暂无评价</text>
+    </view>
+  </view>
+
+  <view class="footer">
+    <view class="footer-btn call" bindtap="callCompanion">联系陪诊师</view>
+    <view class="footer-btn book" bindtap="goBooking">立即预约</view>
+  </view>
+</view>

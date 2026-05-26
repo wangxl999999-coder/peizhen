@@ -1,0 +1,43 @@
+<view class="medical-history-page">
+  <view class="record-list" wx:if="{{records.length > 0}}">
+    <view class="record-card" wx:for="{{records}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="record-header">
+        <text class="record-service">{{item.service_name}}</text>
+        <text class="record-status {{item.status === 'pending_evaluation' ? 'pending' : ''}}">
+          {{item.status === 'pending_evaluation' ? '待评价' : '已完成'}}
+        </text>
+      </view>
+      <view class="record-body">
+        <view class="record-row">
+          <text class="label">医院</text>
+          <text class="value">{{item.hospital_name}}</text>
+        </view>
+        <view class="record-row">
+          <text class="label">科室</text>
+          <text class="value">{{item.department_name}}</text>
+        </view>
+        <view class="record-row">
+          <text class="label">服务日期</text>
+          <text class="value">{{item.service_date}}</text>
+        </view>
+      </view>
+      <view class="record-footer" wx:if="{{item.medical_advice || item.recheck_time}}">
+        <view class="post-service">
+          <view class="post-item" wx:if="{{item.medical_advice}}">
+            <text class="post-label">医嘱:</text>
+            <text class="post-value">{{item.medical_advice}}</text>
+          </view>
+          <view class="post-item" wx:if="{{item.recheck_time}}">
+            <text class="post-label">复诊:</text>
+            <text class="post-value">{{item.recheck_time}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">📋</view>
+    <text>暂无就诊记录</text>
+  </view>
+</view>

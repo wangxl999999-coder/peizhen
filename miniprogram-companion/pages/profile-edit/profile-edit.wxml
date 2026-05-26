@@ -1,0 +1,57 @@
+<view class="profile-edit-page">
+  <view class="form-card">
+    <view class="form-item">
+      <text class="form-label">姓名</text>
+      <input class="form-input" placeholder="请输入姓名" value="{{form.real_name}}" 
+             bindinput="onInput" data-field="real_name" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">性别</text>
+      <picker mode="selector" range="{{['男', '女']}}" value="{{genderIndex}}" bindchange="selectGender">
+        <view class="form-input">
+          {{form.gender === 1 ? '男' : '女'}}
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">年龄</text>
+      <input class="form-input" type="number" placeholder="请输入年龄" value="{{form.age}}" 
+             bindinput="onInput" data-field="age" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">手机号</text>
+      <input class="form-input" type="number" placeholder="请输入手机号" value="{{form.phone}}" 
+             bindinput="onInput" data-field="phone" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">身份证号</text>
+      <input class="form-input" placeholder="请输入身份证号" value="{{form.id_card}}" 
+             bindinput="onInput" data-field="id_card" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">所在城市</text>
+      <input class="form-input" placeholder="请输入城市" value="{{form.city}}" 
+             bindinput="onInput" data-field="city" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">资质证书</text>
+      <input class="form-input" placeholder="如：护士资格证" value="{{form.qualification}}" 
+             bindinput="onInput" data-field="qualification" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">从业年限</text>
+      <input class="form-input" type="number" placeholder="请输入从业年限" value="{{form.experience}}" 
+             bindinput="onInput" data-field="experience" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">个人简介</text>
+      <textarea class="form-textarea" placeholder="请输入个人简介" value="{{form.intro}}" 
+                bindinput="onInput" data-field="intro" maxlength="200"></textarea>
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <button class="btn btn-primary btn-block" bindtap="save">保存</button>
+  </view>
+</view>

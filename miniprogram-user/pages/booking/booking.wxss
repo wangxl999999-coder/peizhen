@@ -1,0 +1,497 @@
+.booking-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 200rpx;
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx 60rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-num {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  background: #ddd;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  margin-bottom: 8rpx;
+}
+
+.step.active .step-num {
+  background: linear-gradient(135deg, #07C160 0%, #06AD56 100%);
+}
+
+.step-line {
+  width: 120rpx;
+  height: 4rpx;
+  background: #ddd;
+  margin: 0 20rpx;
+  margin-bottom: 32rpx;
+}
+
+.step-line.active {
+  background: #07C160;
+}
+
+.step text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.step.active text {
+  color: #07C160;
+}
+
+.service-option {
+  padding: 24rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.service-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.service-option-header {
+  display: flex;
+  align-items: center;
+}
+
+.service-option-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #07C160 0%, #06AD56 100%);
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20rpx;
+  text-align: center;
+  margin-right: 20rpx;
+}
+
+.service-option-info {
+  flex: 1;
+}
+
+.service-option-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.service-option-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.service-option-price {
+  color: #ff4d4f;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+
+.price-unit {
+  font-size: 24rpx;
+  color: #999;
+  font-weight: normal;
+}
+
+.city-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.city-option {
+  width: calc(33.33% - 14rpx);
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+}
+
+.city-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.1);
+  color: #07C160;
+}
+
+.hospital-option {
+  padding: 24rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.hospital-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.hospital-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.hospital-info {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.department-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.dept-option {
+  padding: 16rpx 32rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+}
+
+.dept-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.1);
+  color: #07C160;
+}
+
+.date-scroll {
+  white-space: nowrap;
+}
+
+.date-list {
+  display: inline-flex;
+  padding: 10rpx 0;
+}
+
+.date-option {
+  width: 100rpx;
+  height: 120rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  margin-right: 16rpx;
+}
+
+.date-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.1);
+}
+
+.date-week {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.date-option.selected .date-week {
+  color: #07C160;
+}
+
+.date-day {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.date-option.selected .date-day {
+  color: #07C160;
+}
+
+.time-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.time-option {
+  width: calc(50% - 10rpx);
+  padding: 20rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  position: relative;
+}
+
+.time-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.time-label {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.time-range {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.time-night {
+  position: absolute;
+  top: 10rpx;
+  right: 10rpx;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.companion-select-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.companion-select-item.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.companion-select-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.companion-select-info {
+  flex: 1;
+}
+
+.companion-select-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.companion-select-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-right: 16rpx;
+}
+
+.companion-select-rating {
+  font-size: 24rpx;
+  color: #faad14;
+}
+
+.companion-select-meta {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.companion-select-stats {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.companion-select-stats text {
+  margin-right: 20rpx;
+}
+
+.companion-select-check {
+  width: 48rpx;
+  height: 48rpx;
+  background: #07C160;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+.patient-option {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  position: relative;
+}
+
+.patient-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.patient-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.patient-meta {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.patient-check {
+  position: absolute;
+  right: 24rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40rpx;
+  height: 40rpx;
+  background: #07C160;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.add-patient-btn {
+  text-align: center;
+  padding: 24rpx;
+  border: 2rpx dashed #07C160;
+  border-radius: 16rpx;
+  color: #07C160;
+  font-size: 28rpx;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: #999;
+}
+
+.info-value {
+  color: #333;
+}
+
+.extra-option {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border: 2rpx solid #f0f0f0;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.extra-option.selected {
+  border-color: #07C160;
+  background: rgba(7, 193, 96, 0.05);
+}
+
+.extra-icon {
+  width: 60rpx;
+  height: 60rpx;
+  background: #ff4d4f;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-right: 20rpx;
+}
+
+.extra-info {
+  flex: 1;
+}
+
+.extra-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  margin-bottom: 4rpx;
+}
+
+.extra-desc {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.extra-price {
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+.textarea-input {
+  width: 100%;
+  height: 200rpx;
+  padding: 20rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+}
+
+.price-row.total {
+  border-top: 1rpx solid #f0f0f0;
+  padding-top: 20rpx;
+  margin-top: 10rpx;
+  font-weight: bold;
+}
+
+.footer-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  box-shadow: 0 -2rpx 20rpx rgba(0, 0, 0, 0.05);
+}
