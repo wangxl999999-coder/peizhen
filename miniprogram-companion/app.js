@@ -22,7 +22,7 @@ App({
           if (res.code) {
             try {
               const result = await this.request({
-                url: '/auth/companion/login',
+                url: '/auth/companion/wechat-login',
                 method: 'POST',
                 data: { code: res.code },
                 showLoading: false

@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="form-item">
+    <view class="label">售后类型</view>
+    <radio-group class="radio-group" bindchange="onTypeChange">
+      <label class="radio-item">
+        <radio value="refund" checked="{{form.type === 'refund'}}" color="#07C160"/>
+        <text>申请退款</text>
+      </label>
+      <label class="radio-item">
+        <radio value="complaint" checked="{{form.type === 'complaint'}}" color="#07C160"/>
+        <text>投诉建议</text>
+      </label>
+      <label class="radio-item">
+        <radio value="other" checked="{{form.type === 'other'}}" color="#07C160"/>
+        <text>其他问题</text>
+      </label>
+    </radio-group>
+  </view>
+
+  <view class="form-item">
+    <view class="label">问题原因</view>
+    <input 
+      class="input" 
+      placeholder="请简要描述问题原因" 
+      value="{{form.reason}}"
+      bindinput="onReasonInput" />
+  </view>
+
+  <view class="form-item">
+    <view class="label">详细描述</view>
+    <textarea 
+      class="textarea" 
+      placeholder="请详细描述您遇到的问题，以便我们更好地为您处理"
+      value="{{form.description}}"
+      bindinput="onDescriptionInput"
+      maxlength="500"
+      auto-height />
+  </view>
+
+  <view class="form-item">
+    <view class="label">上传图片（最多3张）</view>
+    <view class="image-list">
+      <view class="image-item" wx:for="{{form.images}}" wx:key="index">
+        <image src="{{item}}" mode="aspectFill" />
+        <view class="remove-btn" bindtap="removeImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="add-btn" bindtap="chooseImage" wx:if="{{form.images.length < 3}}">
+        <text class="add-icon">+</text>
+        <text class="add-text">添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="submit-btn" bindtap="submit">提交申请</button>
+</view>

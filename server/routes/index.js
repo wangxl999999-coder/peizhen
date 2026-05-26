@@ -31,6 +31,9 @@ const upload = multer({
 
 router.post('/auth/wechat-login', authController.wechatLogin);
 router.post('/auth/companion-register', authController.companionRegister);
+router.post('/auth/companion/login', authController.companionLogin);
+router.post('/auth/companion/send-code', authController.companionSendCode);
+router.post('/auth/companion/wechat-login', authController.companionWechatLogin);
 router.post('/auth/admin-login', authController.adminLogin);
 
 router.get('/common/home-data', commonController.getHomeData);

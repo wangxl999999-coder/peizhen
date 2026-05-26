@@ -111,6 +111,133 @@ async function companionRegister(req, res) {
   }
 }
 
+async function companionLogin(req, res) {
+  const { phone, code, openid } = req.body;
+
+  if (!phone) {
+    return res.json(error('请输入手机号'));
+  }
+
+  if (!code) {
+    return res.json(error('请输入验证码'));
+  }
+
+  if (code !== '123456') {
+    return res.json(error('验证码错误，测试请输入 123456'));
+  }
+
+  try {
+    const companion = await db.queryOne('SELECT * FROM pz_companion WHERE phone = ?', [phone]);
+    
+    if (!companion) {
+      return res.json(error('该手机号未注册，测试手机号：13800138001-13800138005'));
+    }
+
+    if (companion.status === 0) {
+      return res.json(error('您的账号正在审核中，请耐心等待'));
+    }
+    if (companion.status === 2) {
+      return res.json(error('您的账号已被禁用'));
+    }
+
+    await db.execute('UPDATE pz_companion SET last_login_time = NOW() WHERE id = ?', [companion.id]);
+
+    const token = jwt.sign(
+      { id: companion.id, openid: companion.openid, role: 'companion' },
+      config.jwt.secret,
+      { expiresIn: config.jwt.expiresIn }
+    );
+
+    res.json(success({
+      token,
+      user: {
+        id: companion.id,
+        real_name: companion.real_name,
+        phone: companion.phone,
+        avatar: companion.avatar || '',
+        status: companion.status
+      }
+    }, '登录成功'));
+  } catch (err) {
+    console.error('陪诊师登录失败:', err);
+    res.json(error('登录失败，请重试'));
+  }
+}
+
+async function companionSendCode(req, res) {
+  const { phone } = req.body;
+
+  if (!phone) {
+    return res.json(error('请输入手机号'));
+  }
+
+  try {
+    res.json(success({}, '验证码已发送'));
+  } catch (err) {
+    console.error('发送验证码失败:', err);
+    res.json(error('发送失败，请重试'));
+  }
+}
+
+async function companionWechatLogin(req, res) {
+  const { code } = req.body;
+
+  if (!code) {
+    return res.json(error('code不能为空'));
+  }
+
+  try {
+    let openid = `test_companion_${Date.now()}`;
+
+    if (config.wechat.appId && config.wechat.appId !== 'your_app_id') {
+      const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${config.wechat.appId}&secret=${config.wechat.appSecret}&js_code=${code}&grant_type=authorization_code`;
+      const response = await axios.get(url);
+      if (response.data.errcode) {
+        return res.json(error('微信登录失败: ' + response.data.errmsg));
+      }
+      openid = response.data.openid;
+    }
+
+    const companion = await db.queryOne('SELECT * FROM pz_companion WHERE openid = ?', [openid]);
+    
+    if (!companion) {
+      return res.json(success({
+        isRegistered: false,
+        openid
+      }, '请先注册成为陪诊师'));
+    }
+
+    if (companion.status === 0) {
+      return res.json(error('您的账号正在审核中，请耐心等待'));
+    }
+    if (companion.status === 2) {
+      return res.json(error('您的账号已被禁用'));
+    }
+
+    await db.execute('UPDATE pz_companion SET last_login_time = NOW() WHERE id = ?', [companion.id]);
+
+    const token = jwt.sign(
+      { id: companion.id, openid: companion.openid, role: 'companion' },
+      config.jwt.secret,
+      { expiresIn: config.jwt.expiresIn }
+    );
+
+    res.json(success({
+      token,
+      user: {
+        id: companion.id,
+        real_name: companion.real_name,
+        phone: companion.phone,
+        avatar: companion.avatar || '',
+        status: companion.status
+      }
+    }, '登录成功'));
+  } catch (err) {
+    console.error('陪诊师微信登录失败:', err);
+    res.json(error('登录失败，请重试'));
+  }
+}
+
 async function adminLogin(req, res) {
   const { username, password } = req.body;
 
@@ -158,5 +285,8 @@ async function adminLogin(req, res) {
 module.exports = {
   wechatLogin,
   companionRegister,
+  companionLogin,
+  companionSendCode,
+  companionWechatLogin,
   adminLogin
 };

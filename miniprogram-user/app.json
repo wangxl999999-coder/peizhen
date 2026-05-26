@@ -2,9 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/login/login",
-    "pages/order/order",
-    "pages/order-detail/order-detail",
     "pages/order-list/order-list",
+    "pages/order-detail/order-detail",
     "pages/booking/booking",
     "pages/companion-list/companion-list",
     "pages/companion-detail/companion-detail",
