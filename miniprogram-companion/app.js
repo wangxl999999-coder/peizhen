@@ -66,7 +66,7 @@ App({
           if (showLoading) wx.hideLoading();
           
           if (res.statusCode === 200) {
-            if (res.data.code === 0) {
+            if (res.data.code === 200) {
               resolve(res.data.data);
             } else if (res.data.code === 401) {
               wx.removeStorageSync('companionToken');
