@@ -1,0 +1,118 @@
+<view class="container">
+  <view wx:if="{{isLoading}}" class="loading">加载中...</view>
+
+  <block wx:else>
+    <view class="form-section">
+      <view class="section-title">服务区域</view>
+      
+      <view class="form-item">
+        <text class="label">服务城市</text>
+        <picker bindchange="onCityChange" value="{{cityIndex}}" range="{{cities}}" range-key="name">
+          <view class="picker-value">
+            {{cities[cityIndex]?.name || '请选择城市'}}
+            <text class="arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <view wx:if="{{hospitals.length > 0}}" class="form-item">
+        <text class="label">服务医院</text>
+        <picker bindchange="onHospitalChange" value="{{hospitalIndex}}" range="{{hospitals}}" range-key="name">
+          <view class="picker-value">
+            {{hospitals[hospitalIndex]?.name || '请选择医院'}}
+            <text class="arrow">›</text>
+          </view>
+        </picker>
+      </view>
+
+      <view wx:if="{{departments.length > 0}}" class="form-item">
+        <text class="label">服务科室（可多选）</text>
+        <view class="checkbox-group">
+          <view 
+            wx:for="{{departments}}" 
+            wx:key="id" 
+            class="checkbox-item {{selectedDepartmentIds.indexOf(item.id) > -1 ? 'active' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="toggleDepartment"
+          >
+            {{item.name}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">服务类型</view>
+      <view class="checkbox-group">
+        <view 
+          wx:for="{{serviceTypes}}" 
+          wx:key="id" 
+          class="checkbox-item {{selectedServiceTypeIds.indexOf(item.id) > -1 ? 'active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="toggleServiceType"
+        >
+          <text class="item-name">{{item.name}}</text>
+          <text wx:if="{{item.price}}" class="item-price">¥{{item.price}}起</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">工作时间</view>
+      <view class="checkbox-group">
+        <view 
+          wx:for="{{timeSlots}}" 
+          wx:key="id" 
+          class="checkbox-item {{selectedTimeSlotIds.indexOf(item.id) > -1 ? 'active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="toggleTimeSlot"
+        >
+          {{item.time}}
+        </view>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">服务价格</view>
+      
+      <view class="form-item">
+        <text class="label">基础服务价格（元）</text>
+        <input 
+          class="input" 
+          type="digit" 
+          placeholder="请输入基础价格" 
+          value="{{basePrice}}" 
+          data-field="basePrice"
+          bindinput="onPriceInput" 
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="label">超时费用（元/小时）</text>
+        <input 
+          class="input" 
+          type="digit" 
+          placeholder="请输入超时费用，选填" 
+          value="{{pricePerHour}}" 
+          data-field="pricePerHour"
+          bindinput="onPriceInput" 
+        />
+      </view>
+    </view>
+
+    <view class="form-section">
+      <view class="section-title">工作状态</view>
+      <view class="switch-item">
+        <text class="label">接单状态</text>
+        <switch checked="{{workStatus === 1}}" bindchange="onWorkStatusChange" color="#07C160" />
+      </view>
+      <text class="tip-text">关闭后将不会收到新的订单推送</text>
+    </view>
+
+    <view class="footer">
+      <button class="btn btn-primary btn-block {{isSaving ? 'disabled' : ''}}" bindtap="save" disabled="{{isSaving}}">
+        {{isSaving ? '保存中...' : '保存设置'}}
+      </button>
+    </view>
+  </block>
+</view>

@@ -11,6 +11,7 @@ const orderController = require('../controllers/orderController');
 const companionController = require('../controllers/companionController');
 const commonController = require('../controllers/commonController');
 const adminController = require('../controllers/adminController');
+const companionEnhancedController = require('../controllers/companionEnhancedController');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -44,6 +45,9 @@ router.get('/common/departments', commonController.getDepartmentList);
 router.get('/common/service-types', commonController.getServiceTypes);
 router.get('/common/time-slots', commonController.getTimeSlots);
 router.get('/common/faqs', commonController.getFaqList);
+router.get('/common/trainings', commonController.getTrainingList);
+router.get('/common/trainings/:id', commonController.getTrainingDetail);
+router.get('/common/platform-rules', commonController.getPlatformRules);
 router.post('/common/upload', auth(), upload.single('file'), commonController.uploadImage);
 
 router.get('/user/info', auth(['user']), userController.getUserInfo);
@@ -76,13 +80,46 @@ router.post('/companion/orders/:id/status', auth(['companion']), companionContro
 router.post('/companion/post-service', auth(['companion']), companionController.savePostService);
 router.post('/companion/work-status', auth(['companion']), companionController.updateWorkStatus);
 
+router.get('/companion/verification', auth(['companion']), companionEnhancedController.getVerification);
+router.post('/companion/verification', auth(['companion']), companionEnhancedController.submitVerification);
+router.get('/companion/qualifications', auth(['companion']), companionEnhancedController.getQualificationList);
+router.post('/companion/qualifications', auth(['companion']), companionEnhancedController.addQualification);
+router.delete('/companion/qualifications/:id', auth(['companion']), companionEnhancedController.deleteQualification);
+router.get('/companion/service-settings', auth(['companion']), companionEnhancedController.getServiceSettings);
+router.post('/companion/service-settings', auth(['companion']), companionEnhancedController.saveServiceSettings);
+router.get('/companion/hall-orders', auth(['companion']), companionEnhancedController.getHallOrders);
+router.post('/companion/orders/:id/grab', auth(['companion']), companionEnhancedController.grabOrder);
+router.post('/companion/orders/:id/accept-order', auth(['companion']), companionEnhancedController.acceptOrder);
+router.post('/companion/orders/:id/reject', auth(['companion']), companionEnhancedController.rejectOrder);
+router.post('/companion/orders/:id/checkin', auth(['companion']), companionEnhancedController.checkin);
+router.get('/companion/orders/:id/checkins', auth(['companion']), companionEnhancedController.getCheckinList);
+router.post('/companion/orders/:id/nodes', auth(['companion']), companionEnhancedController.addOrderNode);
+router.get('/companion/orders/:id/nodes', auth(['companion']), companionEnhancedController.getOrderNodes);
+router.post('/companion/orders/:id/files', auth(['companion']), companionEnhancedController.uploadServiceFile);
+router.get('/companion/orders/:id/files', auth(['companion']), companionEnhancedController.getServiceFiles);
+router.get('/companion/income/statistics', auth(['companion']), companionEnhancedController.getIncomeStatistics);
+router.get('/companion/income/list', auth(['companion']), companionEnhancedController.getIncomeList);
+router.post('/companion/withdraw', auth(['companion']), companionEnhancedController.createWithdraw);
+router.get('/companion/withdraw/list', auth(['companion']), companionEnhancedController.getWithdrawList);
+router.get('/companion/profile-detail', auth(['companion']), companionEnhancedController.getProfileDetail);
+router.get('/companion/evaluations', auth(['companion']), companionEnhancedController.getEvaluationList);
+router.get('/companion/statistics', auth(['companion']), companionEnhancedController.getStatistics);
+router.get('/companion/trainings', auth(['companion']), companionEnhancedController.getTrainingList);
+router.get('/companion/trainings/:id', auth(['companion']), companionEnhancedController.getTrainingDetail);
+router.get('/companion/platform-rules', auth(['companion']), companionEnhancedController.getPlatformRules);
+router.post('/companion/complaints', auth(['companion']), companionEnhancedController.createComplaint);
+router.get('/companion/complaints', auth(['companion']), companionEnhancedController.getComplaintList);
+
 router.get('/admin/dashboard', auth(['admin']), adminController.getDashboardStats);
 
 router.get('/admin/users', auth(['admin']), adminController.getUserList);
 router.post('/admin/users/:id/status', auth(['admin']), adminController.updateUserStatus);
 
 router.get('/admin/companions', auth(['admin']), adminController.getCompanionList);
+router.get('/admin/companions/:id', auth(['admin']), adminController.getCompanionDetail);
 router.post('/admin/companions/:id/audit', auth(['admin']), adminController.auditCompanion);
+router.post('/admin/verifications/:id/audit', auth(['admin']), adminController.auditVerification);
+router.post('/admin/qualifications/:id/audit', auth(['admin']), adminController.auditQualification);
 
 router.get('/admin/orders', auth(['admin']), adminController.getOrderList);
 
@@ -96,5 +133,19 @@ router.delete('/admin/banners/:id', auth(['admin']), adminController.deleteBanne
 router.get('/admin/faqs', auth(['admin']), adminController.getFaqList);
 router.post('/admin/faqs', auth(['admin']), adminController.saveFaq);
 router.delete('/admin/faqs/:id', auth(['admin']), adminController.deleteFaq);
+
+router.get('/admin/trainings', auth(['admin']), adminController.getTrainingList);
+router.post('/admin/trainings', auth(['admin']), adminController.saveTraining);
+router.delete('/admin/trainings/:id', auth(['admin']), adminController.deleteTraining);
+
+router.get('/admin/platform-rules', auth(['admin']), adminController.getPlatformRuleList);
+router.post('/admin/platform-rules', auth(['admin']), adminController.savePlatformRule);
+router.delete('/admin/platform-rules/:id', auth(['admin']), adminController.deletePlatformRule);
+
+router.get('/admin/complaints', auth(['admin']), adminController.getComplaintList);
+router.post('/admin/complaints/:id/handle', auth(['admin']), adminController.handleComplaint);
+
+router.get('/admin/withdraws', auth(['admin']), adminController.getWithdrawList);
+router.post('/admin/withdraws/:id/handle', auth(['admin']), adminController.handleWithdraw);
 
 module.exports = router;

@@ -1,0 +1,59 @@
+<view class="container">
+  <view class="form-card">
+    <view class="form-item">
+      <text class="label">资质类型</text>
+      <picker bindchange="onTypeChange" value="{{typeIndex}}" range="{{typeOptions}}" range-key="label">
+        <view class="picker-value">
+          {{typeOptions[typeIndex].label}}
+          <text class="arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">证书编号</text>
+      <input class="input" placeholder="请输入证书编号" value="{{certNo}}" data-field="certNo}}" bindinput="onInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">签发日期</text>
+      <picker mode="date" value="{{issueDate}}" data-field="issueDate}}" bindchange="onDateChange">
+        <view class="picker-value">
+          {{issueDate || '请选择签发日期'}}
+          <text class="arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">有效期至</text>
+      <picker mode="date" value="{{expireDate}}" data-field="expireDate}}" bindchange="onDateChange">
+        <view class="picker-value">
+          {{expireDate || '请选择有效期'}}
+          <text class="arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">证书照片</text>
+      <view class="images-upload">
+        <view wx:for="{{images}}" wx:key="*this" class="uploaded-item">
+          <image src="{{item}}" mode="aspectFill" class="img" />
+          <view class="remove-btn" data-index="{{index}}" bindtap="removeImage">×</view>
+        </view>
+        <view wx:if="{{images.length < 3}}" class="upload-btn" bindtap="chooseImages">
+          <text class="add-icon">+</text>
+          <text class="add-text">上传照片</text>
+        </view>
+      </view>
+      <text class="tip-text">支持上传最多3张照片</text>
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <button class="btn btn-primary btn-block {{isSubmitting ? 'disabled' : ''}}" bindtap="submit" disabled="{{isSubmitting}}">
+      {{isSubmitting ? '提交中...' : '提交审核'}}
+    </button>
+  </view>
+</view>

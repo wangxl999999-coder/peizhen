@@ -1,0 +1,50 @@
+<view class="container">
+  <view class="header">
+    <text class="title">我的资质</text>
+    <text class="subtitle">上传相关资质证书，提升可信度</text>
+  </view>
+
+  <view wx:if="{{qualifications.length === 0}}" class="empty">
+    <view class="empty-icon">📄</view>
+    <text>暂无资质证书</text>
+    <text>点击下方按钮添加资质</text>
+  </view>
+
+  <view wx:else class="qualification-list">
+    <view wx:for="{{qualifications}}" wx:key="id" class="qualification-card">
+      <view class="card-header">
+        <text class="type">{{item.type_name}}</text>
+        <text class="status status-{{item.status}}">{{statusMap[item.status]}}</text>
+      </view>
+      <view class="card-body">
+        <view class="info-row">
+          <text class="label">证书编号：</text>
+          <text class="value">{{item.cert_no}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">签发日期：</text>
+          <text class="value">{{item.issue_date || '-'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="label">有效期至：</text>
+          <text class="value">{{item.expire_date || '长期'}}</text>
+        </view>
+        <view wx:if="{{item.audit_remark}}" class="audit-remark">
+          <text class="label">审核备注：</text>
+          <text class="value">{{item.audit_remark}}</text>
+        </view>
+      </view>
+      <view wx:if="{{item.images}}" class="images-section">
+        <image wx:for="{{item.images.split(',')}}" wx:for-item="img" wx:key="*this" src="{{img}}" mode="aspectFill" class="cert-img" />
+      </view>
+      <view class="card-footer">
+        <text class="create-time">提交时间：{{item.create_time}}</text>
+        <text wx:if="{{item.status !== 1}}" class="delete-btn" data-id="{{item.id}}" bindtap="deleteQualification">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <button class="btn btn-primary btn-block" bindtap="goToAdd">添加资质证书</button>
+  </view>
+</view>

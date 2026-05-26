@@ -38,6 +38,34 @@ Page({
     wx.switchTab({ url: '/pages/service-record/service-record' });
   },
 
+  goVerification() {
+    wx.navigateTo({ url: '/pages/verification/verification' });
+  },
+
+  goQualifications() {
+    wx.navigateTo({ url: '/pages/qualifications/qualifications' });
+  },
+
+  goServiceSettings() {
+    wx.navigateTo({ url: '/pages/service-settings/service-settings' });
+  },
+
+  goTrainings() {
+    wx.navigateTo({ url: '/pages/trainings/trainings' });
+  },
+
+  goPlatformRules() {
+    wx.navigateTo({ url: '/pages/platform-rules/platform-rules' });
+  },
+
+  goComplaints() {
+    wx.navigateTo({ url: '/pages/complaints/complaints' });
+  },
+
+  goEvaluations() {
+    wx.navigateTo({ url: '/pages/evaluations/evaluations' });
+  },
+
   logout() {
     wx.showModal({
       title: '提示',

@@ -182,6 +182,65 @@ async function getHomeData(req, res) {
   }
 }
 
+async function getTrainingList(req, res) {
+  const { category, page = 1, pageSize = 10 } = req.query;
+
+  try {
+    let trainings = memoryDb.data.trainings.filter(t => t.status === 1);
+
+    if (category && category !== 'all') {
+      trainings = trainings.filter(t => t.category === category);
+    }
+
+    trainings.sort((a, b) => b.sort - a.sort || new Date(b.create_time) - new Date(a.create_time));
+
+    const total = trainings.length;
+    const start = (page - 1) * pageSize;
+    const list = trainings.slice(start, start + parseInt(pageSize));
+
+    res.json(success({ list, total, page: parseInt(page), pageSize: parseInt(pageSize) }));
+  } catch (err) {
+    console.error('获取培训资料失败:', err);
+    res.json(error('获取失败'));
+  }
+}
+
+async function getTrainingDetail(req, res) {
+  const id = parseInt(req.params.id);
+
+  try {
+    const training = memoryDb.findOne('trainings', { id, status: 1 });
+    if (!training) {
+      return res.json(error('培训资料不存在'));
+    }
+
+    memoryDb.update('trainings', id, { view_count: training.view_count + 1 });
+
+    res.json(success({ ...training, view_count: training.view_count + 1 }));
+  } catch (err) {
+    console.error('获取培训详情失败:', err);
+    res.json(error('获取失败'));
+  }
+}
+
+async function getPlatformRules(req, res) {
+  const { type } = req.query;
+
+  try {
+    let rules = memoryDb.data.platformRules.filter(r => r.status === 1);
+
+    if (type && type !== 'all') {
+      rules = rules.filter(r => r.type === type);
+    }
+
+    rules.sort((a, b) => a.sort - b.sort);
+    res.json(success(rules));
+  } catch (err) {
+    console.error('获取平台规则失败:', err);
+    res.json(error('获取失败'));
+  }
+}
+
 module.exports = {
   getBanners,
   getCityList,
@@ -191,5 +250,8 @@ module.exports = {
   getTimeSlots,
   getFaqList,
   uploadImage,
-  getHomeData
+  getHomeData,
+  getTrainingList,
+  getTrainingDetail,
+  getPlatformRules
 };

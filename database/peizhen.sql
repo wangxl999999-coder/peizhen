@@ -416,6 +416,303 @@ CREATE TABLE `pz_time_slot` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='服务时间段表';
 
 -- ----------------------------
+-- 19. 陪诊师实名认证表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_verification`;
+CREATE TABLE `pz_companion_verification` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `real_name` varchar(32) DEFAULT '' COMMENT '真实姓名',
+  `id_card` varchar(32) DEFAULT '' COMMENT '身份证号',
+  `id_card_front` varchar(255) DEFAULT '' COMMENT '身份证正面照',
+  `id_card_back` varchar(255) DEFAULT '' COMMENT '身份证反面照',
+  `face_photo` varchar(255) DEFAULT '' COMMENT '人脸识别照片',
+  `verification_status` tinyint(1) DEFAULT 0 COMMENT '认证状态 0待审核 1已通过 2已拒绝',
+  `verification_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `verification_remark` varchar(255) DEFAULT '' COMMENT '审核备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师实名认证表';
+
+-- ----------------------------
+-- 20. 陪诊师资质表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_qualification`;
+CREATE TABLE `pz_companion_qualification` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `type` varchar(32) DEFAULT '' COMMENT '资质类型 health_cert健康证 training_cert培训证 nurse_license护士证 doctor_license医师证 other其他',
+  `type_name` varchar(32) DEFAULT '' COMMENT '资质名称',
+  `cert_no` varchar(64) DEFAULT '' COMMENT '证件编号',
+  `issue_date` date DEFAULT NULL COMMENT '发证日期',
+  `expire_date` date DEFAULT NULL COMMENT '有效期至',
+  `images` varchar(500) DEFAULT '' COMMENT '证件照片 逗号分隔',
+  `status` tinyint(1) DEFAULT 0 COMMENT '状态 0待审核 1已通过 2已拒绝',
+  `audit_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `audit_remark` varchar(255) DEFAULT '' COMMENT '审核备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师资质表';
+
+-- ----------------------------
+-- 21. 陪诊师服务设置表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_service`;
+CREATE TABLE `pz_companion_service` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `service_type` varchar(32) DEFAULT '' COMMENT '服务类型',
+  `service_name` varchar(32) DEFAULT '' COMMENT '服务名称',
+  `base_price` decimal(10,2) DEFAULT 0 COMMENT '基础价格',
+  `custom_price` decimal(10,2) DEFAULT 0 COMMENT '自定义价格',
+  `is_enabled` tinyint(1) DEFAULT 1 COMMENT '是否启用 0否 1是',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师服务设置表';
+
+-- ----------------------------
+-- 22. 陪诊师服务城市表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_city`;
+CREATE TABLE `pz_companion_city` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `city_id` int(11) DEFAULT 0 COMMENT '城市ID',
+  `city_name` varchar(32) DEFAULT '' COMMENT '城市名称',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师服务城市表';
+
+-- ----------------------------
+-- 23. 陪诊师服务医院表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_hospital`;
+CREATE TABLE `pz_companion_hospital` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `hospital_id` bigint(20) DEFAULT 0 COMMENT '医院ID',
+  `hospital_name` varchar(100) DEFAULT '' COMMENT '医院名称',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师服务医院表';
+
+-- ----------------------------
+-- 24. 陪诊师服务科室表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_department`;
+CREATE TABLE `pz_companion_department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `department_id` int(11) DEFAULT 0 COMMENT '科室ID',
+  `department_name` varchar(32) DEFAULT '' COMMENT '科室名称',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师服务科室表';
+
+-- ----------------------------
+-- 25. 陪诊师工作时间表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_companion_work_time`;
+CREATE TABLE `pz_companion_work_time` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `day_of_week` tinyint(1) DEFAULT 0 COMMENT '星期几 0周日 1周一 ... 6周六',
+  `time_slot_id` int(11) DEFAULT 0 COMMENT '时间段ID',
+  `start_time` varchar(8) DEFAULT '' COMMENT '开始时间',
+  `end_time` varchar(8) DEFAULT '' COMMENT '结束时间',
+  `is_enabled` tinyint(1) DEFAULT 1 COMMENT '是否启用 0否 1是',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='陪诊师工作时间表';
+
+-- ----------------------------
+-- 26. 订单打卡记录表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_order_checkin`;
+CREATE TABLE `pz_order_checkin` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `order_id` bigint(20) DEFAULT 0 COMMENT '订单ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `type` varchar(16) DEFAULT '' COMMENT '打卡类型 arrive到达医院 start开始服务 complete结束服务',
+  `latitude` decimal(10,6) DEFAULT 0 COMMENT '纬度',
+  `longitude` decimal(10,6) DEFAULT 0 COMMENT '经度',
+  `address` varchar(255) DEFAULT '' COMMENT '地址',
+  `photo` varchar(255) DEFAULT '' COMMENT '打卡照片',
+  `remark` varchar(255) DEFAULT '' COMMENT '备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单打卡记录表';
+
+-- ----------------------------
+-- 27. 订单就诊节点表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_order_node`;
+CREATE TABLE `pz_order_node` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `order_id` bigint(20) DEFAULT 0 COMMENT '订单ID',
+  `node_type` varchar(32) DEFAULT '' COMMENT '节点类型 registered已挂号 waiting等待叫号 in_diagnosis就诊中 examination检查中 medication取药中 completed已完成',
+  `node_name` varchar(32) DEFAULT '' COMMENT '节点名称',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注',
+  `images` varchar(500) DEFAULT '' COMMENT '相关图片 逗号分隔',
+  `operator_id` bigint(20) DEFAULT 0 COMMENT '操作人ID',
+  `operator_type` varchar(16) DEFAULT 'companion' COMMENT '操作人类型 companion用户',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单就诊节点表';
+
+-- ----------------------------
+-- 28. 订单服务资料表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_order_service_file`;
+CREATE TABLE `pz_order_service_file` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `order_id` bigint(20) DEFAULT 0 COMMENT '订单ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `file_type` varchar(32) DEFAULT '' COMMENT '文件类型 examination检查单 prescription处方单 receipt缴费单 other其他',
+  `file_name` varchar(100) DEFAULT '' COMMENT '文件名称',
+  `file_url` varchar(255) DEFAULT '' COMMENT '文件地址',
+  `remark` varchar(255) DEFAULT '' COMMENT '备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单服务资料表';
+
+-- ----------------------------
+-- 29. 收入明细表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_income`;
+CREATE TABLE `pz_income` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `order_id` bigint(20) DEFAULT 0 COMMENT '订单ID',
+  `order_no` varchar(32) DEFAULT '' COMMENT '订单编号',
+  `type` varchar(16) DEFAULT 'order' COMMENT '收入类型 order订单收入 refund退款 withdraw提现',
+  `amount` decimal(10,2) DEFAULT 0 COMMENT '金额',
+  `platform_fee` decimal(10,2) DEFAULT 0 COMMENT '平台分成',
+  `service_fee` decimal(10,2) DEFAULT 0 COMMENT '手续费',
+  `actual_amount` decimal(10,2) DEFAULT 0 COMMENT '实际到账',
+  `remark` varchar(255) DEFAULT '' COMMENT '备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_companion_id` (`companion_id`),
+  KEY `idx_order_id` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='收入明细表';
+
+-- ----------------------------
+-- 30. 提现表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_withdraw`;
+CREATE TABLE `pz_withdraw` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `withdraw_no` varchar(32) DEFAULT '' COMMENT '提现单号',
+  `amount` decimal(10,2) DEFAULT 0 COMMENT '提现金额',
+  `service_fee` decimal(10,2) DEFAULT 0 COMMENT '手续费',
+  `actual_amount` decimal(10,2) DEFAULT 0 COMMENT '实际到账',
+  `pay_type` varchar(16) DEFAULT 'wechat' COMMENT '提现方式 wechat微信 alipay支付宝 bank银行卡',
+  `account_name` varchar(64) DEFAULT '' COMMENT '账户姓名',
+  `account_no` varchar(64) DEFAULT '' COMMENT '账号',
+  `status` varchar(16) DEFAULT 'pending' COMMENT '状态 pending待处理 processing处理中 success成功 failed失败',
+  `audit_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `pay_time` datetime DEFAULT NULL COMMENT '打款时间',
+  `remark` varchar(255) DEFAULT '' COMMENT '备注',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_withdraw_no` (`withdraw_no`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='提现表';
+
+-- ----------------------------
+-- 31. 培训资料表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_training`;
+CREATE TABLE `pz_training` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `title` varchar(100) DEFAULT '' COMMENT '标题',
+  `category` varchar(32) DEFAULT '' COMMENT '分类 knowledge专业知识 process服务流程 skill服务技巧 safety安全规范',
+  `content` text COMMENT '内容',
+  `cover_image` varchar(255) DEFAULT '' COMMENT '封面图',
+  `file_url` varchar(255) DEFAULT '' COMMENT '附件地址',
+  `view_count` int(10) DEFAULT 0 COMMENT '浏览次数',
+  `sort` int(10) DEFAULT 0 COMMENT '排序',
+  `status` tinyint(1) DEFAULT 1 COMMENT '状态 0禁用 1启用',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='培训资料表';
+
+-- ----------------------------
+-- 32. 平台规则表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_platform_rule`;
+CREATE TABLE `pz_platform_rule` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `title` varchar(100) DEFAULT '' COMMENT '标题',
+  `type` varchar(32) DEFAULT '' COMMENT '类型 agreement协议 rule规则 notice公告',
+  `content` text COMMENT '内容',
+  `version` varchar(32) DEFAULT '' COMMENT '版本号',
+  `sort` int(10) DEFAULT 0 COMMENT '排序',
+  `status` tinyint(1) DEFAULT 1 COMMENT '状态 0禁用 1启用',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='平台规则表';
+
+-- ----------------------------
+-- 33. 投诉建议表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_complaint`;
+CREATE TABLE `pz_complaint` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `user_id` bigint(20) DEFAULT 0 COMMENT '用户ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `type` varchar(16) DEFAULT 'suggestion' COMMENT '类型 complaint投诉 suggestion建议',
+  `order_id` bigint(20) DEFAULT 0 COMMENT '关联订单ID',
+  `title` varchar(100) DEFAULT '' COMMENT '标题',
+  `content` text COMMENT '内容',
+  `images` varchar(500) DEFAULT '' COMMENT '图片 逗号分隔',
+  `contact` varchar(64) DEFAULT '' COMMENT '联系方式',
+  `status` varchar(16) DEFAULT 'pending' COMMENT '状态 pending待处理 processing处理中 completed已完成',
+  `handle_result` text COMMENT '处理结果',
+  `handle_time` datetime DEFAULT NULL COMMENT '处理时间',
+  `handler_id` int(11) DEFAULT 0 COMMENT '处理人ID',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='投诉建议表';
+
+-- ----------------------------
+-- 34. 订单抢单表
+-- ----------------------------
+DROP TABLE IF EXISTS `pz_order_grab`;
+CREATE TABLE `pz_order_grab` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `order_id` bigint(20) DEFAULT 0 COMMENT '订单ID',
+  `companion_id` bigint(20) DEFAULT 0 COMMENT '陪诊师ID',
+  `grab_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '抢单时间',
+  `is_success` tinyint(1) DEFAULT 0 COMMENT '是否成功 0否 1是',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_id` (`order_id`),
+  KEY `idx_companion_id` (`companion_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单抢单表';
+
+-- ----------------------------
 -- 初始化数据
 -- ----------------------------
 

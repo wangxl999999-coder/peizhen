@@ -1,0 +1,82 @@
+<view class="container">
+  <view wx:if="{{verification && verification.verification_status === 1}}" class="success-tip">
+    <view class="success-icon">✓</view>
+    <text class="success-text">实名认证已通过</text>
+    <text class="success-sub">真实姓名：{{verification.real_name}}</text>
+    <text class="success-sub">身份证号：{{verification.id_card}}</text>
+  </view>
+
+  <view wx:elif="{{verification && verification.verification_status === 0}}" class="pending-tip">
+    <view class="pending-icon">⏳</view>
+    <text class="pending-text">实名认证审核中</text>
+    <text class="pending-sub">请耐心等待平台审核</text>
+  </view>
+
+  <view wx:elif="{{verification && verification.verification_status === 2}}" class="reject-tip">
+    <view class="reject-icon">✕</view>
+    <text class="reject-text">实名认证被拒绝</text>
+    <text class="reject-sub">拒绝原因：{{verification.verification_remark}}</text>
+    <text class="reject-tip-text">请重新提交认证信息</text>
+  </view>
+
+  <view wx:if="{{!verification || verification.verification_status !== 1}}" class="form-section">
+    <view class="form-item">
+      <text class="label">真实姓名</text>
+      <input class="input" placeholder="请输入真实姓名" value="{{realName}}" data-field="realName" bindinput="onInput" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">身份证号</text>
+      <input class="input" placeholder="请输入18位身份证号" value="{{idCard}}" data-field="idCard" bindinput="onInput" maxlength="18" />
+    </view>
+
+    <view class="form-item">
+      <text class="label">身份证正面照</text>
+      <view class="upload-section">
+        <view wx:if="{{idCardFront}}" class="upload-preview">
+          <image src="{{idCardFront}}" mode="aspectFill" class="preview-img" />
+          <view class="upload-change" data-field="idCardFront" bindtap="chooseImage">重新上传</view>
+        </view>
+        <view wx:else class="upload-btn" data-field="idCardFront" bindtap="chooseImage">
+          <text class="upload-icon">+</text>
+          <text class="upload-text">上传正面照</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">身份证反面照</text>
+      <view class="upload-section">
+        <view wx:if="{{idCardBack}}" class="upload-preview">
+          <image src="{{idCardBack}}" mode="aspectFill" class="preview-img" />
+          <view class="upload-change" data-field="idCardBack" bindtap="chooseImage">重新上传</view>
+        </view>
+        <view wx:else class="upload-btn" data-field="idCardBack" bindtap="chooseImage">
+          <text class="upload-icon">+</text>
+          <text class="upload-text">上传反面照</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">人脸识别照片</text>
+      <view class="upload-section">
+        <view wx:if="{{facePhoto}}" class="upload-preview">
+          <image src="{{facePhoto}}" mode="aspectFill" class="preview-img" />
+          <view class="upload-change" bindtap="takeFacePhoto">重新拍照</view>
+        </view>
+        <view wx:else class="upload-btn" bindtap="takeFacePhoto">
+          <text class="upload-icon">📷</text>
+          <text class="upload-text">拍摄人脸照片</text>
+        </view>
+      </view>
+      <text class="tip-text">请拍摄清晰的正面人脸照片，确保五官完整可见</text>
+    </view>
+
+    <view class="submit-section">
+      <button class="btn btn-primary btn-block {{isSubmitting ? 'disabled' : ''}}" bindtap="submit" disabled="{{isSubmitting}}">
+        {{isSubmitting ? '提交中...' : '提交认证'}}
+      </button>
+    </view>
+  </view>
+</view>

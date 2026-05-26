@@ -1,0 +1,197 @@
+.container {
+  padding-bottom: 40rpx;
+}
+
+.wallet-header {
+  background: linear-gradient(135deg, #07C160 0%, #06AD56 100%);
+  padding: 40rpx 30rpx 60rpx;
+}
+
+.balance-card {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 40rpx;
+}
+
+.balance-label {
+  display: block;
+  font-size: 28rpx;
+  opacity: 0.9;
+  margin-bottom: 16rpx;
+}
+
+.balance-amount {
+  display: block;
+  font-size: 72rpx;
+  font-weight: bold;
+  margin-bottom: 30rpx;
+}
+
+.balance-actions {
+  display: flex;
+  gap: 20rpx;
+  justify-content: center;
+}
+
+.action-btn {
+  min-width: 200rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 28rpx;
+  border-radius: 36rpx;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.stats-row {
+  display: flex;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16rpx;
+  padding: 30rpx;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+}
+
+.stat-value {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+.stat-divider {
+  width: 1rpx;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  padding: 0 30rpx;
+}
+
+.tab-item {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #666;
+  position: relative;
+}
+
+.tab-item.active {
+  color: #07C160;
+  font-weight: 500;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 4rpx;
+  background: #07C160;
+  border-radius: 2rpx;
+}
+
+.card {
+  background: #fff;
+  margin: 20rpx;
+  padding: 30rpx;
+  border-radius: 16rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.stat-grid {
+  display: flex;
+}
+
+.grid-item {
+  flex: 1;
+  text-align: center;
+}
+
+.grid-value {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #ff4d4f;
+  margin-bottom: 8rpx;
+}
+
+.grid-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.income-list {
+  background: #fff;
+  margin: 20rpx;
+  border-radius: 16rpx;
+}
+
+.income-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.income-item:last-child {
+  border-bottom: none;
+}
+
+.income-title {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.income-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.income-amount {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #07C160;
+  text-align: right;
+  margin-bottom: 8rpx;
+}
+
+.income-type {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.loading, .no-more {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+  font-size: 28rpx;
+}

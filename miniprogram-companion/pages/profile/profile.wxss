@@ -148,6 +148,22 @@
   font-size: 32rpx;
 }
 
+.status-pending {
+  color: #faad14;
+  background: #fff7e6;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
+.status-approved {
+  color: #07C160;
+  background: #f6ffed;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+}
+
 .logout-section {
   margin: 40rpx 30rpx;
 }

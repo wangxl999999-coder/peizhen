@@ -1,0 +1,61 @@
+<view class="container">
+  <view class="form-card">
+    <view class="form-item">
+      <text class="label">反馈类型</text>
+      <picker bindchange="onTypeChange" value="{{typeIndex}}" range="{{typeOptions}}" range-key="label">
+        <view class="picker-value">
+          {{typeOptions[typeIndex].label}}
+          <text class="arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="label">反馈内容</text>
+      <textarea 
+        class="textarea" 
+        placeholder="请详细描述您遇到的问题或建议..."
+        value="{{content}}"
+        bindinput="onContentInput"
+        maxlength="500"
+        auto-height
+      />
+      <text class="char-count">{{content.length}}/500</text>
+    </view>
+
+    <view class="form-item">
+      <text class="label">上传图片（选填）</text>
+      <view class="images-upload">
+        <view wx:for="{{images}}" wx:key="*this" class="uploaded-item">
+          <image src="{{item}}" mode="aspectFill" class="img" />
+          <view class="remove-btn" data-index="{{index}}" bindtap="removeImage">×</view>
+        </view>
+        <view wx:if="{{images.length < 3}}" class="upload-btn" bindtap="chooseImages">
+          <text class="add-icon">+</text>
+          <text class="add-text">添加图片</text>
+        </view>
+      </view>
+      <text class="tip-text">支持上传最多3张图片</text>
+    </view>
+
+    <view class="form-item">
+      <text class="label">联系方式（选填）</text>
+      <input 
+        class="input" 
+        placeholder="请输入手机号或其他联系方式"
+        value="{{contact}}"
+        bindinput="onContactInput"
+      />
+    </view>
+  </view>
+
+  <view class="submit-section">
+    <button 
+      class="btn btn-primary btn-block {{isSubmitting ? 'disabled' : ''}}" 
+      bindtap="submit"
+      disabled="{{isSubmitting}}"
+    >
+      {{isSubmitting ? '提交中...' : '提交反馈'}}
+    </button>
+  </view>
+</view>

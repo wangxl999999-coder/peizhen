@@ -1,0 +1,29 @@
+<view class="container">
+  <view wx:if="{{evaluations.length === 0 && !loading}}" class="empty">
+    <view class="empty-icon">⭐</view>
+    <text>暂无评价</text>
+  </view>
+
+  <view wx:else class="evaluation-list">
+    <view wx:for="{{evaluations}}" wx:key="id" class="evaluation-card">
+      <view class="card-header">
+        <image wx:if="{{item.user_avatar}}" src="{{item.user_avatar}}" class="avatar" />
+        <view class="user-info">
+          <text class="user-name">{{item.user_name || '匿名用户'}}</text>
+          <view class="rating">
+            <text wx:for="{{item.rating}}" wx:for-item="star" wx:key="*this" class="star">★</text>
+            <text wx:for="{{5 - item.rating}}" wx:for-item="star" wx:key="*this" class="star empty">☆</text>
+          </view>
+        </view>
+        <text class="create-time">{{item.create_time}}</text>
+      </view>
+      <text wx:if="{{item.content}}" class="content">{{item.content}}</text>
+      <view wx:if="{{item.tags && item.tags.length > 0}}" class="tags">
+        <text wx:for="{{item.tags}}" wx:key="*this" class="tag">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:if="{{noMore && evaluations.length > 0}}" class="no-more">没有更多了</view>
+</view>

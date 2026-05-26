@@ -1,0 +1,93 @@
+.container {
+  padding-bottom: 40rpx;
+}
+
+.cover {
+  width: 100%;
+  display: block;
+}
+
+.content {
+  background: #fff;
+  margin: 20rpx;
+  padding: 30rpx;
+  border-radius: 16rpx;
+}
+
+.title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 20rpx;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.category-tag {
+  font-size: 24rpx;
+  color: #07C160;
+  background: rgba(7, 193, 96, 0.1);
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+}
+
+.views {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.divider {
+  height: 1rpx;
+  background: #f0f0f0;
+  margin: 20rpx 0;
+}
+
+.rich-content {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.8;
+}
+
+.file-section {
+  margin-top: 30rpx;
+  padding-top: 30rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.file-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  padding: 20rpx;
+  background: #f7f8fa;
+  border-radius: 12rpx;
+}
+
+.file-icon {
+  font-size: 32rpx;
+}
+
+.file-name {
+  font-size: 28rpx;
+  color: #07C160;
+}
+
+.loading {
+  text-align: center;
+  padding: 100rpx;
+  color: #999;
+}

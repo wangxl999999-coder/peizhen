@@ -1,0 +1,31 @@
+<view class="container">
+  <view class="type-tabs">
+    <view 
+      wx:for="{{types}}" 
+      wx:key="value" 
+      class="type-item {{type === item.value ? 'active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onTypeChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <view wx:if="{{rules.length === 0}}" class="empty">
+    <view class="empty-icon">📋</view>
+    <text>暂无规则文档</text>
+  </view>
+
+  <view wx:else class="rule-list">
+    <view wx:for="{{rules}}" wx:key="id" class="rule-card">
+      <view class="rule-header">
+        <text class="rule-title">{{item.title}}</text>
+        <text class="rule-version">{{item.version}}</text>
+      </view>
+      <view class="rule-content">
+        <text>{{item.content}}</text>
+      </view>
+      <text class="rule-time">更新时间：{{item.create_time}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,26 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+
+  <block wx:elif="{{training}}">
+    <image wx:if="{{training.cover_image}}" src="{{training.cover_image}}" mode="widthFix" class="cover" />
+    
+    <view class="content">
+      <text class="title">{{training.title}}</text>
+      <view class="meta">
+        <text class="category-tag">{{training.category_name || training.category}}</text>
+        <text class="views">👁 {{training.view_count || 0}}次浏览</text>
+      </view>
+      <view class="divider"></view>
+      <view class="rich-content">
+        <text>{{training.content}}</text>
+      </view>
+      <view wx:if="{{training.file_url}}" class="file-section">
+        <text class="file-label">附件资料：</text>
+        <view class="file-item" bindtap="previewFile">
+          <text class="file-icon">📎</text>
+          <text class="file-name">点击查看附件</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

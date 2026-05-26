@@ -175,8 +175,179 @@ const data = {
     privacy_policy: '隐私政策内容...',
     min_withdraw_amount: 100,
     withdraw_fee_rate: 0,
-    withdraw_period: 'T+1'
-  }
+    withdraw_period: 'T+1',
+    platform_fee_rate: 0.2
+  },
+  companionVerifications: [
+    {
+      id: 1,
+      companion_id: 1,
+      real_name: '张护士',
+      id_card: '110101199001011234',
+      id_card_front: '',
+      id_card_back: '',
+      face_photo: '',
+      verification_status: 1,
+      verification_time: '2024-01-01 00:00:00',
+      verification_remark: '审核通过',
+      create_time: '2024-01-01 00:00:00'
+    }
+  ],
+  companionQualifications: [
+    {
+      id: 1,
+      companion_id: 1,
+      type: 'nurse_license',
+      type_name: '护士执业证书',
+      cert_no: '201511001234',
+      issue_date: '2015-01-01',
+      expire_date: '2025-01-01',
+      images: '',
+      status: 1,
+      audit_time: '2024-01-01 00:00:00',
+      audit_remark: '审核通过',
+      create_time: '2024-01-01 00:00:00'
+    },
+    {
+      id: 2,
+      companion_id: 1,
+      type: 'health_cert',
+      type_name: '健康证',
+      cert_no: '202311005678',
+      issue_date: '2023-06-01',
+      expire_date: '2024-06-01',
+      images: '',
+      status: 1,
+      audit_time: '2024-01-01 00:00:00',
+      audit_remark: '审核通过',
+      create_time: '2024-01-01 00:00:00'
+    }
+  ],
+  companionServices: [
+    {
+      id: 1,
+      companion_id: 1,
+      service_type: 'full_accompany',
+      service_name: '全程陪诊',
+      base_price: 299,
+      custom_price: 299,
+      is_enabled: 1,
+      create_time: '2024-01-01 00:00:00'
+    },
+    {
+      id: 2,
+      companion_id: 1,
+      service_type: 'registration',
+      service_name: '代挂号',
+      base_price: 99,
+      custom_price: 99,
+      is_enabled: 1,
+      create_time: '2024-01-01 00:00:00'
+    },
+    {
+      id: 3,
+      companion_id: 1,
+      service_type: 'get_medicine',
+      service_name: '代取药',
+      base_price: 59,
+      custom_price: 59,
+      is_enabled: 1,
+      create_time: '2024-01-01 00:00:00'
+    }
+  ],
+  companionCities: [
+    { id: 1, companion_id: 1, city_id: 1, city_name: '北京', create_time: '2024-01-01 00:00:00' }
+  ],
+  companionHospitals: [
+    { id: 1, companion_id: 1, hospital_id: 1, hospital_name: '北京协和医院', create_time: '2024-01-01 00:00:00' },
+    { id: 2, companion_id: 1, hospital_id: 2, hospital_name: '北京大学第一医院', create_time: '2024-01-01 00:00:00' }
+  ],
+  companionDepartments: [
+    { id: 1, companion_id: 1, department_id: 1, department_name: '内科', create_time: '2024-01-01 00:00:00' },
+    { id: 2, companion_id: 1, department_id: 2, department_name: '外科', create_time: '2024-01-01 00:00:00' }
+  ],
+  companionWorkTimes: [],
+  orderCheckins: [],
+  orderNodes: [],
+  orderServiceFiles: [],
+  incomes: [
+    {
+      id: 1,
+      companion_id: 1,
+      order_id: 1,
+      order_no: 'PZ202401010001',
+      type: 'order',
+      amount: 299,
+      platform_fee: 59.8,
+      service_fee: 0,
+      actual_amount: 239.2,
+      remark: '订单收入',
+      create_time: '2024-01-16 10:00:00'
+    }
+  ],
+  withdraws: [],
+  trainings: [
+    {
+      id: 1,
+      title: '陪诊服务流程规范',
+      category: 'process',
+      content: '详细介绍陪诊服务的完整流程，从接单到服务结束的各个环节规范...',
+      cover_image: '',
+      file_url: '',
+      view_count: 128,
+      sort: 1,
+      status: 1,
+      create_time: '2024-01-01 00:00:00'
+    },
+    {
+      id: 2,
+      title: '医患沟通技巧',
+      category: 'skill',
+      content: '如何与患者及家属有效沟通，提升服务质量和用户满意度...',
+      cover_image: '',
+      file_url: '',
+      view_count: 95,
+      sort: 2,
+      status: 1,
+      create_time: '2024-01-01 00:00:00'
+    },
+    {
+      id: 3,
+      title: '医疗基础知识',
+      category: 'knowledge',
+      content: '常见疾病知识、检查项目介绍、用药常识等医疗基础知识...',
+      cover_image: '',
+      file_url: '',
+      view_count: 156,
+      sort: 3,
+      status: 1,
+      create_time: '2024-01-01 00:00:00'
+    }
+  ],
+  platformRules: [
+    {
+      id: 1,
+      title: '陪诊师服务协议',
+      type: 'agreement',
+      content: '陪诊师入驻平台服务协议内容...',
+      version: 'v1.0',
+      sort: 1,
+      status: 1,
+      create_time: '2024-01-01 00:00:00'
+    },
+    {
+      id: 2,
+      title: '平台管理规则',
+      type: 'rule',
+      content: '平台运营管理规则，包括接单规范、服务标准、处罚机制等...',
+      version: 'v1.0',
+      sort: 2,
+      status: 1,
+      create_time: '2024-01-01 00:00:00'
+    }
+  ],
+  complaints: [],
+  orderGrabs: []
 };
 
 let nextId = {
@@ -195,7 +366,22 @@ let nextId = {
   companionCases: 3,
   admins: 2,
   afterSales: 1,
-  complaints: 1
+  complaints: 1,
+  companionVerifications: 2,
+  companionQualifications: 3,
+  companionServices: 4,
+  companionCities: 2,
+  companionHospitals: 3,
+  companionDepartments: 3,
+  companionWorkTimes: 1,
+  orderCheckins: 1,
+  orderNodes: 1,
+  orderServiceFiles: 1,
+  incomes: 2,
+  withdraws: 1,
+  trainings: 4,
+  platformRules: 3,
+  orderGrabs: 1
 };
 
 function getNextId(table) {

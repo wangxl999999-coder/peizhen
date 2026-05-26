@@ -1,0 +1,110 @@
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+
+  <block wx:elif="{{order}}">
+    <view class="order-header">
+      <view class="order-info">
+        <text class="order-no">订单号：{{order.order_no}}</text>
+        <text class="status-badge status-{{order.status}}">{{order.status_text}}</text>
+      </view>
+      <view class="hospital-info">
+        <text class="hospital-name">{{order.hospital_name}}</text>
+        <text class="service-info">{{order.service_date}} {{order.time_slot}}</text>
+      </view>
+      <view class="user-info">
+        <text>就诊人：{{order.patient_name}}</text>
+        <text>联系电话：{{order.user_phone}}</text>
+      </view>
+    </view>
+
+    <view class="action-section">
+      <view class="action-row">
+        <view class="action-btn" bindtap="callPhone">
+          <text class="action-icon">📞</text>
+          <text class="action-text">拨打电话</text>
+        </view>
+        <view class="action-btn" bindtap="navigateToHospital">
+          <text class="action-icon">🧭</text>
+          <text class="action-text">导航到医院</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="checkin-section">
+      <view class="section-title">服务打卡</view>
+      <view class="checkin-row">
+        <view class="checkin-item">
+          <text class="checkin-label">开始服务打卡</text>
+          <text wx:if="{{checkins[0]}}" class="checkin-time">{{checkins[0].checkin_time}}</text>
+          <button 
+            wx:else 
+            class="btn btn-primary checkin-btn" 
+            data-type="start" 
+            bindtap="checkin"
+          >
+            开始打卡
+          </button>
+        </view>
+        <view class="checkin-item">
+          <text class="checkin-label">结束服务打卡</text>
+          <text wx:if="{{checkins[1]}}" class="checkin-time">{{checkins[1].checkin_time}}</text>
+          <button 
+            wx:elif="{{checkins[0]}}" 
+            class="btn btn-primary checkin-btn" 
+            data-type="end" 
+            bindtap="checkin"
+          >
+            结束打卡
+          </button>
+          <text wx:else class="checkin-tip">请先开始服务打卡</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">就诊节点</view>
+      <view class="node-list">
+        <view wx:for="{{nodes}}" wx:key="id" class="node-item">
+          <view class="node-dot"></view>
+          <view class="node-content">
+            <text class="node-text">{{item.content}}</text>
+            <text class="node-time">{{item.create_time}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="add-node">
+        <input 
+          class="node-input" 
+          placeholder="输入节点内容，如：已到达医院、已完成挂号等"
+          value="{{nodeContent}}"
+          bindinput="onNodeInput"
+        />
+        <button class="btn btn-primary node-btn" bindtap="addNode">添加</button>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">资料上传</view>
+      <view class="file-type-row">
+        <picker bindchange="onFileTypeChange" value="{{fileTypeOptions.findIndex(o => o.value === fileType)}}" range="{{fileTypeOptions}}" range-key="label">
+          <view class="picker-value">
+            {{fileTypeOptions.find(o => o.value === fileType)?.label}}
+            <text class="arrow">›</text>
+          </view>
+        </picker>
+        <button class="btn btn-primary upload-btn" bindtap="uploadFile">上传照片</button>
+      </view>
+      <view wx:if="{{files.length > 0}}" class="file-list">
+        <image 
+          wx:for="{{files}}" 
+          wx:key="id" 
+          src="{{item.file_url}}" 
+          mode="aspectFill" 
+          class="file-item"
+          data-url="{{item.file_url}}"
+          bindtap="previewFile"
+        />
+      </view>
+    </view>
+  </block>
+</view>

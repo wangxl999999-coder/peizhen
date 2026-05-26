@@ -1,0 +1,41 @@
+<view class="container">
+  <view class="category-tabs">
+    <view 
+      wx:for="{{categories}}" 
+      wx:key="value" 
+      class="category-item {{category === item.value ? 'active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onCategoryChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <view wx:if="{{trainings.length === 0 && !loading}}" class="empty">
+    <view class="empty-icon">📚</view>
+    <text>暂无培训资料</text>
+  </view>
+
+  <view wx:else class="training-list">
+    <view 
+      wx:for="{{trainings}}" 
+      wx:key="id" 
+      class="training-card"
+      data-id="{{item.id}}"
+      bindtap="goToDetail"
+    >
+      <image wx:if="{{item.cover_image}}" src="{{item.cover_image}}" mode="aspectFill" class="cover" />
+      <view class="card-content">
+        <text class="title">{{item.title}}</text>
+        <view class="meta">
+          <text class="category-tag">{{item.category_name || item.category}}</text>
+          <text class="views">👁 {{item.view_count || 0}}</text>
+        </view>
+        <text class="create-time">{{item.create_time}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:if="{{noMore && trainings.length > 0}}" class="no-more">没有更多了</view>
+</view>

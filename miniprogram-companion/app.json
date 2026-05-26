@@ -4,11 +4,25 @@
     "pages/login/login",
     "pages/order-list/order-list",
     "pages/order-detail/order-detail",
+    "pages/order-service/order-service",
+    "pages/hall-orders/hall-orders",
     "pages/profile/profile",
     "pages/profile-edit/profile-edit",
     "pages/service-record/service-record",
     "pages/income/income",
-    "pages/skills/skills"
+    "pages/wallet/wallet",
+    "pages/withdraw/withdraw",
+    "pages/skills/skills",
+    "pages/verification/verification",
+    "pages/qualifications/qualifications",
+    "pages/qualification-add/qualification-add",
+    "pages/service-settings/service-settings",
+    "pages/trainings/trainings",
+    "pages/training-detail/training-detail",
+    "pages/platform-rules/platform-rules",
+    "pages/complaints/complaints",
+    "pages/complaint-add/complaint-add",
+    "pages/evaluations/evaluations"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -30,14 +44,14 @@
         "selectedIconPath": "images/tab/home-active.png"
       },
       {
-        "pagePath": "pages/order-list/order-list",
-        "text": "订单",
+        "pagePath": "pages/hall-orders/hall-orders",
+        "text": "接单",
         "iconPath": "images/tab/order.png",
         "selectedIconPath": "images/tab/order-active.png"
       },
       {
-        "pagePath": "pages/service-record/service-record",
-        "text": "记录",
+        "pagePath": "pages/order-list/order-list",
+        "text": "订单",
         "iconPath": "images/tab/record.png",
         "selectedIconPath": "images/tab/record-active.png"
       },

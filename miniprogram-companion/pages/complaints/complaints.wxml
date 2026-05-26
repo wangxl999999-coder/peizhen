@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="status-tabs">
+    <view 
+      wx:for="{{statusOptions}}" 
+      wx:key="value" 
+      class="status-item {{status === item.value ? 'active' : ''}}"
+      data-value="{{item.value}}"
+      bindtap="onStatusChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <view wx:if="{{complaints.length === 0 && !loading}}" class="empty">
+    <view class="empty-icon">💬</view>
+    <text>暂无投诉建议记录</text>
+  </view>
+
+  <view wx:else class="complaint-list">
+    <view wx:for="{{complaints}}" wx:key="id" class="complaint-card">
+      <view class="card-header">
+        <text class="type">{{item.type_name}}</text>
+        <text class="status status-{{item.status}}">{{item.status === 'pending' ? '待处理' : item.status === 'processing' ? '处理中' : '已处理'}}</text>
+      </view>
+      <view class="card-body">
+        <text class="content">{{item.content}}</text>
+      </view>
+      <view wx:if="{{item.handle_result}}" class="handle-result">
+        <text class="handle-label">处理结果：</text>
+        <text class="handle-text">{{item.handle_result}}</text>
+      </view>
+      <text class="create-time">提交时间：{{item.create_time}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading">加载中...</view>
+  <view wx:if="{{noMore && complaints.length > 0}}" class="no-more">没有更多了</view>
+
+  <view class="footer">
+    <button class="btn btn-primary btn-block" bindtap="goToAdd">提交投诉建议</button>
+  </view>
+</view>

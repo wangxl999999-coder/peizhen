@@ -1,0 +1,108 @@
+<view class="container">
+  <view class="wallet-header">
+    <view class="balance-card">
+      <text class="balance-label">可提现金额（元）</text>
+      <text class="balance-amount">{{statistics?.withdrawable || '0.00'}}</text>
+      <view class="balance-actions">
+        <button class="btn btn-primary action-btn" bindtap="goToWithdraw">立即提现</button>
+        <button class="btn btn-secondary action-btn" bindtap="goToWithdrawList">提现记录</button>
+      </view>
+    </view>
+
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-value">{{statistics?.total_income || '0.00'}}</text>
+        <text class="stat-label">累计收入</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{statistics?.total_orders || 0}}</text>
+        <text class="stat-label">完成订单</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{statistics?.platform_fee || '0.00'}}</text>
+        <text class="stat-label">平台分成</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="tabs">
+    <view 
+      wx:for="{{tabs}}" 
+      wx:key="key" 
+      class="tab-item {{activeTab === item.key ? 'active' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onTabChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+
+  <block wx:if="{{activeTab === 'statistics'}}">
+    <view class="card">
+      <view class="card-title">今日统计</view>
+      <view class="stat-grid">
+        <view class="grid-item">
+          <text class="grid-value">{{statistics?.today_income || '0.00'}}</text>
+          <text class="grid-label">今日收入</text>
+        </view>
+        <view class="grid-item">
+          <text class="grid-value">{{statistics?.today_orders || 0}}</text>
+          <text class="grid-label">今日订单</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">本周统计</view>
+      <view class="stat-grid">
+        <view class="grid-item">
+          <text class="grid-value">{{statistics?.week_income || '0.00'}}</text>
+          <text class="grid-label">本周收入</text>
+        </view>
+        <view class="grid-item">
+          <text class="grid-value">{{statistics?.week_orders || 0}}</text>
+          <text class="grid-label">本周订单</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="card-title">本月统计</view>
+      <view class="stat-grid">
+        <view class="grid-item">
+          <text class="grid-value">{{statistics?.month_income || '0.00'}}</text>
+          <text class="grid-label">本月收入</text>
+        </view>
+        <view class="grid-item">
+          <text class="grid-value">{{statistics?.month_orders || 0}}</text>
+          <text class="grid-label">本月订单</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view wx:if="{{incomeList.length === 0 && !loading}}" class="empty">
+      <view class="empty-icon">💰</view>
+      <text>暂无收入记录</text>
+    </view>
+
+    <view wx:else class="income-list">
+      <view wx:for="{{incomeList}}" wx:key="id" class="income-item">
+        <view class="income-left">
+          <text class="income-title">{{item.order_no}}</text>
+          <text class="income-time">{{item.create_time}}</text>
+        </view>
+        <view class="income-right">
+          <text class="income-amount">+{{item.amount}}</text>
+          <text class="income-type">{{item.type_text}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="loading">加载中...</view>
+    <view wx:if="{{noMore && incomeList.length > 0}}" class="no-more">没有更多记录了</view>
+  </block>
+</view>
