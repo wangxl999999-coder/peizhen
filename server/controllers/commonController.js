@@ -1,19 +1,9 @@
-const db = require('../utils/db');
+const memoryDb = require('../utils/memoryDb');
 const { success, error } = require('../utils/response');
 
 async function getBanners(req, res) {
-  const { position = 'home' } = req.query;
-
   try {
-    const list = await db.query(
-      `SELECT id, title, image, link_type, link_value 
-       FROM pz_banner 
-       WHERE position = ? AND status = 1 
-       AND (start_time IS NULL OR start_time <= NOW()) 
-       AND (end_time IS NULL OR end_time >= NOW())
-       ORDER BY sort ASC`,
-      [position]
-    );
+    const list = memoryDb.findAll('banners', { status: 1 }, 'sort ASC');
     res.json(success(list));
   } catch (err) {
     console.error('获取Banner失败:', err);
@@ -23,14 +13,10 @@ async function getBanners(req, res) {
 
 async function getCityList(req, res) {
   try {
-    const hotCities = await db.query(
-      'SELECT id, name, province, pinyin, hot FROM pz_city WHERE hot = 1 AND status = 1 ORDER BY sort ASC'
-    );
-
-    const allCities = await db.query(
-      'SELECT id, name, province, pinyin, hot FROM pz_city WHERE status = 1 ORDER BY pinyin ASC'
-    );
-
+    const allCities = memoryDb.findAll('cities', {}, 'sort ASC');
+    
+    const hotCities = allCities.filter(city => city.hot === 1);
+    
     const cityMap = {};
     allCities.forEach(city => {
       const letter = city.pinyin.charAt(0).toUpperCase();
@@ -51,35 +37,25 @@ async function getCityList(req, res) {
 }
 
 async function getHospitalList(req, res) {
-  const { city_id, keyword, page = 1, pageSize = 20 } = req.query;
+  const { city_id, city } = req.query;
 
   try {
-    let whereSql = 'WHERE status = 1';
-    let params = [];
-
+    let hospitals = memoryDb.data.hospitals;
+    
     if (city_id) {
-      whereSql += ' AND city_id = ?';
-      params.push(city_id);
+      hospitals = hospitals.filter(h => h.city_id === parseInt(city_id));
     }
-
-    if (keyword) {
-      whereSql += ' AND name LIKE ?';
-      params.push(`%${keyword}%`);
+    
+    if (city) {
+      const cityObj = memoryDb.findOne('cities', { name: city });
+      if (cityObj) {
+        hospitals = hospitals.filter(h => h.city_id === cityObj.id);
+      }
     }
+    
+    hospitals.sort((a, b) => a.sort - b.sort);
 
-    const countResult = await db.queryOne(`SELECT COUNT(*) as total FROM pz_hospital ${whereSql}`, params);
-    const total = countResult.total;
-
-    const offset = (page - 1) * pageSize;
-    const list = await db.query(
-      `SELECT id, name, city, level, address, phone, image, intro 
-       FROM pz_hospital ${whereSql} 
-       ORDER BY sort ASC, id DESC 
-       LIMIT ? OFFSET ?`,
-      [...params, parseInt(pageSize), offset]
-    );
-
-    res.json(success({ list, total }));
+    res.json(success({ list: hospitals, total: hospitals.length }));
   } catch (err) {
     console.error('获取医院列表失败:', err);
     res.json(error('获取失败'));
@@ -87,11 +63,18 @@ async function getHospitalList(req, res) {
 }
 
 async function getDepartmentList(req, res) {
+  const { hospital_id } = req.query;
+  
   try {
-    const list = await db.query(
-      'SELECT id, name, parent_id, icon FROM pz_department WHERE status = 1 ORDER BY sort ASC, id ASC'
-    );
-    res.json(success(list));
+    let departments = memoryDb.data.departments;
+    
+    if (hospital_id) {
+      departments = departments.filter(d => d.hospital_id === parseInt(hospital_id));
+    }
+    
+    departments.sort((a, b) => a.sort - b.sort);
+    
+    res.json(success(departments));
   } catch (err) {
     console.error('获取科室列表失败:', err);
     res.json(error('获取失败'));
@@ -100,12 +83,7 @@ async function getDepartmentList(req, res) {
 
 async function getServiceTypes(req, res) {
   try {
-    const list = await db.query(
-      `SELECT id, type, name, icon, base_price, unit, urgent_fee, night_fee, remote_fee, description 
-       FROM pz_service_type 
-       WHERE status = 1 
-       ORDER BY sort ASC`
-    );
+    const list = memoryDb.findAll('services', { status: 1 }, 'sort ASC');
     res.json(success(list));
   } catch (err) {
     console.error('获取服务类型失败:', err);
@@ -115,16 +93,15 @@ async function getServiceTypes(req, res) {
 
 async function getTimeSlots(req, res) {
   try {
-    const list = await db.query(
-      'SELECT id, start_time, end_time, name, is_night FROM pz_time_slot WHERE status = 1 ORDER BY sort ASC'
-    );
+    const list = memoryDb.findAll('timeSlots', { status: 1 }, 'id ASC');
+    
+    const result = list.map(item => ({
+      ...item,
+      time: `${item.start_time}-${item.end_time}`,
+      label: `${item.start_time}-${item.end_time}`
+    }));
 
-    list.forEach(item => {
-      item.time = `${item.start_time}-${item.end_time}`;
-      item.label = `${item.name} ${item.start_time}-${item.end_time}`;
-    });
-
-    res.json(success(list));
+    res.json(success(result));
   } catch (err) {
     console.error('获取时间段失败:', err);
     res.json(error('获取失败'));
@@ -132,24 +109,8 @@ async function getTimeSlots(req, res) {
 }
 
 async function getFaqList(req, res) {
-  const { category } = req.query;
-
   try {
-    let whereSql = 'WHERE status = 1';
-    let params = [];
-
-    if (category) {
-      whereSql += ' AND category = ?';
-      params.push(category);
-    }
-
-    const list = await db.query(
-      `SELECT id, question, answer, category 
-       FROM pz_faq ${whereSql} 
-       ORDER BY sort ASC, id DESC`,
-      params
-    );
-
+    const list = memoryDb.findAll('faqs', { status: 1 }, 'sort ASC');
     res.json(success(list));
   } catch (err) {
     console.error('获取常见问题失败:', err);
@@ -182,45 +143,32 @@ async function getHomeData(req, res) {
   const { city } = req.query;
 
   try {
-    const banners = await db.query(
-      `SELECT id, title, image, link_type, link_value 
-       FROM pz_banner 
-       WHERE position = 'home' AND status = 1 
-       AND (start_time IS NULL OR start_time <= NOW()) 
-       AND (end_time IS NULL OR end_time >= NOW())
-       ORDER BY sort ASC`
-    );
+    const banners = memoryDb.findAll('banners', { status: 1 }, 'sort ASC');
 
-    const services = await db.query(
-      `SELECT id, type, name, icon, base_price, description 
-       FROM pz_service_type 
-       WHERE status = 1 
-       ORDER BY sort ASC`
-    );
+    const services = memoryDb.findAll('services', { status: 1 }, 'sort ASC');
 
-    let recommendWhere = 'WHERE c.status = 1 AND c.work_status = 1';
-    let recommendParams = [];
+    let companions = memoryDb.findAll('companions', { status: 1, work_status: 1 }, 'rating DESC');
+    
     if (city) {
-      recommendWhere += ' AND c.city = ?';
-      recommendParams.push(city);
+      companions = companions.filter(c => c.city === city || c.city.includes(city));
     }
+    
+    const recommendCompanions = companions.slice(0, 6).map(c => ({
+      id: c.id,
+      real_name: c.real_name,
+      avatar: c.avatar,
+      gender: c.gender,
+      age: c.age,
+      qualification: c.qualification,
+      city: c.city,
+      rating: c.rating,
+      order_count: c.order_count,
+      good_rate: c.good_rate,
+      intro: c.intro,
+      skills: c.skills
+    }));
 
-    const recommendCompanions = await db.query(
-      `SELECT c.id, c.real_name, c.avatar, c.gender, c.age, c.qualification, c.city,
-              c.rating, c.order_count, c.good_rate, c.intro
-       FROM pz_companion c ${recommendWhere}
-       ORDER BY c.rating DESC, c.order_count DESC
-       LIMIT 6`,
-      recommendParams
-    );
-
-    const hotFaqs = await db.query(
-      `SELECT id, question, answer 
-       FROM pz_faq 
-       WHERE status = 1 
-       ORDER BY sort ASC 
-       LIMIT 5`
-    );
+    const hotFaqs = memoryDb.findAll('faqs', { status: 1 }, 'sort ASC').slice(0, 5);
 
     res.json(success({
       banners,

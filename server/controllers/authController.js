@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const config = require('../config');
-const db = require('../utils/db');
+const memoryDb = require('../utils/memoryDb');
 const { success, error } = require('../utils/response');
 
 async function wechatLogin(req, res) {
@@ -127,10 +127,11 @@ async function companionLogin(req, res) {
   }
 
   try {
-    const companion = await db.queryOne('SELECT * FROM pz_companion WHERE phone = ?', [phone]);
+    const companion = memoryDb.findOne('companions', { phone });
     
     if (!companion) {
-      return res.json(error('该手机号未注册，测试手机号：13800138001-13800138005'));
+      const testPhones = memoryDb.data.companions.map(c => c.phone).join('、');
+      return res.json(error(`该手机号未注册，测试手机号：${testPhones}`));
     }
 
     if (companion.status === 0) {
@@ -140,7 +141,7 @@ async function companionLogin(req, res) {
       return res.json(error('您的账号已被禁用'));
     }
 
-    await db.execute('UPDATE pz_companion SET last_login_time = NOW() WHERE id = ?', [companion.id]);
+    memoryDb.update('companions', companion.id, { last_login_time: new Date().toISOString().slice(0, 19).replace('T', ' ') });
 
     const token = jwt.sign(
       { id: companion.id, openid: companion.openid, role: 'companion' },
