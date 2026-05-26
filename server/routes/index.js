@@ -71,7 +71,6 @@ router.get('/user/medical-history', auth(['user']), orderController.getMedicalHi
 router.get('/companion', companionController.getCompanionList);
 router.get('/companion/nearby', companionController.getNearbyCompanions);
 router.get('/companion/recommend', companionController.getRecommendCompanions);
-router.get('/companion/:id', companionController.getCompanionDetail);
 
 router.get('/companion/info', auth(['companion']), companionController.getCompanionInfo);
 router.get('/companion/orders', auth(['companion']), companionController.getCompanionOrders);
@@ -111,6 +110,8 @@ router.get('/companion/trainings/:id', auth(['companion']), companionEnhancedCon
 router.get('/companion/platform-rules', auth(['companion']), companionEnhancedController.getPlatformRules);
 router.post('/companion/complaints', auth(['companion']), companionEnhancedController.createComplaint);
 router.get('/companion/complaints', auth(['companion']), companionEnhancedController.getComplaintList);
+
+router.get('/companion/:id', companionController.getCompanionDetail);
 
 router.get('/admin/dashboard', auth(['admin']), adminController.getDashboardStats);
 
