@@ -101,9 +101,11 @@ router.get('/companion/income/statistics', auth(['companion']), companionEnhance
 router.get('/companion/income/list', auth(['companion']), companionEnhancedController.getIncomeList);
 router.post('/companion/withdraw', auth(['companion']), companionEnhancedController.createWithdraw);
 router.get('/companion/withdraw/list', auth(['companion']), companionEnhancedController.getWithdrawList);
+router.get('/companion/profile', auth(['companion']), companionEnhancedController.getProfile);
 router.get('/companion/profile-detail', auth(['companion']), companionEnhancedController.getProfileDetail);
 router.get('/companion/evaluations', auth(['companion']), companionEnhancedController.getEvaluationList);
 router.get('/companion/statistics', auth(['companion']), companionEnhancedController.getStatistics);
+router.get('/companion/orders/today', auth(['companion']), companionEnhancedController.getTodayOrders);
 router.get('/companion/trainings', auth(['companion']), companionEnhancedController.getTrainingList);
 router.get('/companion/trainings/:id', auth(['companion']), companionEnhancedController.getTrainingDetail);
 router.get('/companion/platform-rules', auth(['companion']), companionEnhancedController.getPlatformRules);

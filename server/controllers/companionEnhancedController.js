@@ -769,16 +769,38 @@ async function getProfileDetail(req, res) {
     const avgRating = evaluations.length > 0
       ? evaluations.reduce((sum, e) => sum + e.rating, 0) / evaluations.length
       : 5;
+    const goodRate = evaluations.length > 0
+      ? (evaluations.filter(e => e.rating >= 4).length / evaluations.length * 100).toFixed(1)
+      : '100.0';
+
+    const orders = memoryDb.data.orders.filter(o => o.companion_id === companionId);
+    const orderCount = orders.length;
 
     const incomes = memoryDb.findAll('incomes', { companion_id: companionId });
     const totalIncome = incomes
       .filter(i => i.type === 'order')
       .reduce((sum, i) => sum + parseFloat(i.actual_amount || 0), 0);
 
+    let verificationStatus = 'pending';
+    if (verification) {
+      if (verification.verification_status === 1) {
+        verificationStatus = 'approved';
+      } else if (verification.verification_status === 2) {
+        verificationStatus = 'rejected';
+      } else {
+        verificationStatus = 'pending';
+      }
+    }
+
     res.json(success({
       ...companion,
       verification: verification || null,
       qualifications,
+      rating: avgRating.toFixed(1),
+      order_count: orderCount,
+      good_rate: goodRate,
+      experience: companion.experience || 0,
+      verification_status: verificationStatus,
       avg_rating: avgRating.toFixed(1),
       evaluation_count: evaluations.length,
       total_income: totalIncome,
@@ -829,6 +851,9 @@ async function getStatistics(req, res) {
     const avgRating = evaluations.length > 0
       ? evaluations.reduce((sum, e) => sum + e.rating, 0) / evaluations.length
       : 5;
+    const goodRate = evaluations.length > 0
+      ? (evaluations.filter(e => e.rating >= 4).length / evaluations.length * 100).toFixed(1)
+      : '100.0';
 
     const incomes = memoryDb.findAll('incomes', { companion_id: companionId });
     const totalIncome = incomes
@@ -838,17 +863,61 @@ async function getStatistics(req, res) {
     const today = dayjs().format('YYYY-MM-DD');
     const todayOrders = orders.filter(o => o.create_time.startsWith(today)).length;
 
+    const monthStart = dayjs().startOf('month').format('YYYY-MM-DD');
+    const monthIncome = incomes
+      .filter(i => i.type === 'order' && i.create_time >= monthStart)
+      .reduce((sum, i) => sum + parseFloat(i.actual_amount || 0), 0);
+
     res.json(success({
       total_orders: totalOrders,
       completed_orders: completedOrders,
       pending_orders: pendingOrders,
       avg_rating: avgRating.toFixed(1),
       evaluation_count: evaluations.length,
-      total_income: totalIncome,
-      today_orders: todayOrders
+      total_income: totalIncome.toFixed(2),
+      today_orders: todayOrders,
+      today_order_count: todayOrders,
+      month_income: monthIncome.toFixed(2),
+      good_rate: goodRate
     }));
   } catch (err) {
     console.error('获取统计数据失败:', err);
+    res.json(error('获取失败'));
+  }
+}
+
+async function getProfile(req, res) {
+  return getProfileDetail(req, res);
+}
+
+async function getTodayOrders(req, res) {
+  const companionId = req.user.id;
+
+  try {
+    const today = dayjs().format('YYYY-MM-DD');
+    const orders = memoryDb.data.orders.filter(o => 
+      o.companion_id === companionId && 
+      o.create_time.startsWith(today)
+    );
+
+    const orderStatusMap = {
+      pending_accept: '待接单',
+      accepted: '已接单',
+      pending_service: '待服务',
+      in_service: '服务中',
+      pending_evaluation: '待评价',
+      completed: '已完成',
+      cancelled: '已取消'
+    };
+
+    const result = orders.map(order => ({
+      ...order,
+      status_text: orderStatusMap[order.status] || order.status
+    }));
+
+    res.json(success(result));
+  } catch (err) {
+    console.error('获取今日订单失败:', err);
     res.json(error('获取失败'));
   }
 }
@@ -962,8 +1031,8 @@ async function getComplaintList(req, res) {
 module.exports = {
   submitVerification,
   getVerification,
-  getQualificationList,
   addQualification,
+  getQualificationList,
   deleteQualification,
   getServiceSettings,
   saveServiceSettings,
@@ -988,5 +1057,7 @@ module.exports = {
   getTrainingDetail,
   getPlatformRules,
   createComplaint,
-  getComplaintList
+  getComplaintList,
+  getProfile,
+  getTodayOrders
 };
