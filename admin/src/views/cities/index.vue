@@ -58,7 +58,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { getCityListApi, createCityApi, updateCityApi, deleteCityApi } from '@/api'
 
 const loading = ref(false)
@@ -66,7 +66,7 @@ const cityList = ref([])
 const formDialogVisible = ref(false)
 const isEdit = ref(false)
 const currentCityId = ref(null)
-const formRef = ref<FormInstance>()
+const formRef = ref(null)
 
 const cityForm = reactive({
   name: '',
@@ -75,7 +75,7 @@ const cityForm = reactive({
   sort: 0
 })
 
-const formRules: FormRules = {
+const formRules = {
   name: [{ required: true, message: '请输入城市名称', trigger: 'blur' }],
   first_letter: [{ required: true, message: '请输入首字母', trigger: 'blur' }]
 }

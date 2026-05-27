@@ -63,14 +63,21 @@ const route = useRoute()
 const adminName = ref('管理员')
 
 const menuItems = [
-  { path: '/dashboard', title: '数据统计', icon: 'DataAnalysis' },
+  { path: '/dashboard', title: '数据看板', icon: 'DataAnalysis' },
+  { path: '/statistics', title: '数据统计', icon: 'DataLine' },
   { path: '/users', title: '用户管理', icon: 'User' },
   { path: '/companions', title: '陪诊师管理', icon: 'Avatar' },
   { path: '/orders', title: '订单管理', icon: 'List' },
+  { path: '/disputes', title: '纠纷处理', icon: 'Warning' },
+  { path: '/hospitals', title: '医院管理', icon: 'Building' },
+  { path: '/departments', title: '科室管理', icon: 'Document' },
+  { path: '/coupons', title: '优惠券管理', icon: 'Present' },
   { path: '/services', title: '服务管理', icon: 'Service' },
   { path: '/cities', title: '城市管理', icon: 'Location' },
   { path: '/banners', title: 'Banner管理', icon: 'Picture' },
-  { path: '/complaints', title: '投诉处理', icon: 'Warning' },
+  { path: '/complaints', title: '投诉处理', icon: 'ChatLineRound' },
+  { path: '/finance/commission', title: '分成明细', icon: 'Wallet' },
+  { path: '/finance/reconciliation', title: '对账管理', icon: 'Ticket' },
   { path: '/settings', title: '系统设置', icon: 'Setting' }
 ]
 

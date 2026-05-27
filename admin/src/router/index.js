@@ -16,7 +16,13 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue'),
-        meta: { title: '数据统计', icon: 'DataAnalysis' }
+        meta: { title: '数据看板', icon: 'DataAnalysis' }
+      },
+      {
+        path: 'statistics',
+        name: 'Statistics',
+        component: () => import('@/views/statistics/index.vue'),
+        meta: { title: '数据统计', icon: 'DataLine' }
       },
       {
         path: 'users',
@@ -35,6 +41,30 @@ const routes = [
         name: 'Orders',
         component: () => import('@/views/orders/index.vue'),
         meta: { title: '订单管理', icon: 'List' }
+      },
+      {
+        path: 'disputes',
+        name: 'Disputes',
+        component: () => import('@/views/disputes/index.vue'),
+        meta: { title: '纠纷处理', icon: 'Warning' }
+      },
+      {
+        path: 'hospitals',
+        name: 'Hospitals',
+        component: () => import('@/views/hospitals/index.vue'),
+        meta: { title: '医院管理', icon: 'Building' }
+      },
+      {
+        path: 'departments',
+        name: 'Departments',
+        component: () => import('@/views/departments/index.vue'),
+        meta: { title: '科室管理', icon: 'Document' }
+      },
+      {
+        path: 'coupons',
+        name: 'Coupons',
+        component: () => import('@/views/coupons/index.vue'),
+        meta: { title: '优惠券管理', icon: 'Present' }
       },
       {
         path: 'services',
@@ -58,7 +88,19 @@ const routes = [
         path: 'complaints',
         name: 'Complaints',
         component: () => import('@/views/complaints/index.vue'),
-        meta: { title: '投诉处理', icon: 'Warning' }
+        meta: { title: '投诉处理', icon: 'ChatLineRound' }
+      },
+      {
+        path: 'finance/commission',
+        name: 'Commission',
+        component: () => import('@/views/finance/commission.vue'),
+        meta: { title: '分成明细', icon: 'Wallet' }
+      },
+      {
+        path: 'finance/reconciliation',
+        name: 'Reconciliation',
+        component: () => import('@/views/finance/reconciliation.vue'),
+        meta: { title: '对账管理', icon: 'Ticket' }
       },
       {
         path: 'settings',

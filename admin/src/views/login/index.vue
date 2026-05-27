@@ -54,11 +54,11 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { loginApi } from '@/api'
 
 const router = useRouter()
-const loginFormRef = ref<FormInstance>()
+const loginFormRef = ref(null)
 const loading = ref(false)
 
 const loginForm = reactive({
@@ -66,7 +66,7 @@ const loginForm = reactive({
   password: ''
 })
 
-const loginRules: FormRules = {
+const loginRules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' }
   ],

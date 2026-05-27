@@ -82,7 +82,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { getBannerListApi, createBannerApi, updateBannerApi, deleteBannerApi } from '@/api'
 
 const loading = ref(false)
@@ -90,7 +90,7 @@ const bannerList = ref([])
 const formDialogVisible = ref(false)
 const isEdit = ref(false)
 const currentBannerId = ref(null)
-const formRef = ref<FormInstance>()
+const formRef = ref(null)
 
 const bannerForm = reactive({
   title: '',
@@ -101,7 +101,7 @@ const bannerForm = reactive({
   status: 1
 })
 
-const formRules: FormRules = {
+const formRules = {
   title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
   image_url: [{ required: true, message: '请输入图片链接', trigger: 'blur' }]
 }

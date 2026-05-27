@@ -121,6 +121,7 @@ router.get('/companion/:id', companionController.getCompanionDetail);
 router.get('/admin/dashboard', auth(['admin']), adminController.getDashboardStats);
 
 router.get('/admin/users', auth(['admin']), adminController.getUserList);
+router.get('/admin/users/:id', auth(['admin']), adminController.getUserDetail);
 router.post('/admin/users/:id/status', auth(['admin']), adminController.updateUserStatus);
 
 router.get('/admin/companions', auth(['admin']), adminController.getCompanionList);
@@ -128,8 +129,14 @@ router.get('/admin/companions/:id', auth(['admin']), adminController.getCompanio
 router.post('/admin/companions/:id/audit', auth(['admin']), adminController.auditCompanion);
 router.post('/admin/verifications/:id/audit', auth(['admin']), adminController.auditVerification);
 router.post('/admin/qualifications/:id/audit', auth(['admin']), adminController.auditQualification);
+router.put('/admin/companion-services/:id', auth(['admin']), adminController.updateCompanionService);
+router.put('/admin/companions/:id/rating', auth(['admin']), adminController.updateCompanionRating);
+router.get('/admin/companion-statistics', auth(['admin']), adminController.getCompanionStatistics);
 
 router.get('/admin/orders', auth(['admin']), adminController.getOrderList);
+router.get('/admin/orders/:id', auth(['admin']), adminController.getOrderDetail);
+router.get('/admin/orders/statistics', auth(['admin']), adminController.getOrderStatistics);
+router.get('/admin/orders/export', auth(['admin']), adminController.exportOrders);
 
 router.get('/admin/after-sales', auth(['admin']), adminController.getAfterSalesList);
 router.post('/admin/after-sales/:id/handle', auth(['admin']), adminController.handleAfterSales);
@@ -138,22 +145,53 @@ router.get('/admin/banners', auth(['admin']), adminController.getBannerList);
 router.post('/admin/banners', auth(['admin']), adminController.saveBanner);
 router.delete('/admin/banners/:id', auth(['admin']), adminController.deleteBanner);
 
+router.get('/admin/hospitals', auth(['admin']), adminController.getHospitalList);
+router.post('/admin/hospitals', auth(['admin']), adminController.saveHospital);
+router.delete('/admin/hospitals/:id', auth(['admin']), adminController.deleteHospital);
+
+router.get('/admin/departments', auth(['admin']), adminController.getDepartmentList);
+router.post('/admin/departments', auth(['admin']), adminController.saveDepartment);
+router.delete('/admin/departments/:id', auth(['admin']), adminController.deleteDepartment);
+
+router.get('/admin/coupons', auth(['admin']), adminController.getCouponList);
+router.post('/admin/coupons', auth(['admin']), adminController.saveCoupon);
+router.delete('/admin/coupons/:id', auth(['admin']), adminController.deleteCoupon);
+
+router.get('/admin/services', auth(['admin']), adminController.getServiceList);
+router.post('/admin/services', auth(['admin']), adminController.saveService);
+router.delete('/admin/services/:id', auth(['admin']), adminController.deleteService);
+
+router.get('/admin/cities', auth(['admin']), adminController.getCityList);
+router.post('/admin/cities', auth(['admin']), adminController.saveCity);
+router.delete('/admin/cities/:id', auth(['admin']), adminController.deleteCity);
+
 router.get('/admin/faqs', auth(['admin']), adminController.getFaqList);
 router.post('/admin/faqs', auth(['admin']), adminController.saveFaq);
 router.delete('/admin/faqs/:id', auth(['admin']), adminController.deleteFaq);
 
-router.get('/admin/trainings', auth(['admin']), adminController.getTrainingList);
-router.post('/admin/trainings', auth(['admin']), adminController.saveTraining);
-router.delete('/admin/trainings/:id', auth(['admin']), adminController.deleteTraining);
-
-router.get('/admin/platform-rules', auth(['admin']), adminController.getPlatformRuleList);
-router.post('/admin/platform-rules', auth(['admin']), adminController.savePlatformRule);
-router.delete('/admin/platform-rules/:id', auth(['admin']), adminController.deletePlatformRule);
+router.get('/admin/settings', auth(['admin']), adminController.getSettings);
+router.put('/admin/settings', auth(['admin']), adminController.updateSettings);
 
 router.get('/admin/complaints', auth(['admin']), adminController.getComplaintList);
 router.post('/admin/complaints/:id/handle', auth(['admin']), adminController.handleComplaint);
 
+router.get('/admin/finance', auth(['admin']), adminController.getFinanceList);
+router.get('/admin/finance/statistics', auth(['admin']), adminController.getFinanceStatistics);
+
 router.get('/admin/withdraws', auth(['admin']), adminController.getWithdrawList);
 router.post('/admin/withdraws/:id/handle', auth(['admin']), adminController.handleWithdraw);
+
+router.get('/admin/invoices', auth(['admin']), adminController.getInvoiceList);
+router.post('/admin/invoices/:id/handle', auth(['admin']), adminController.handleInvoice);
+
+router.get('/admin/stats/user-growth', auth(['admin']), adminController.getUserGrowthStats);
+router.get('/admin/stats/activity', auth(['admin']), adminController.getActivityStats);
+router.get('/admin/stats/repurchase-rate', auth(['admin']), adminController.getRepurchaseRate);
+router.get('/admin/users/statistics', auth(['admin']), adminController.getUserStatistics);
+router.post('/admin/orders/:id/refund', auth(['admin']), adminController.processRefund);
+router.get('/admin/finance/commission', auth(['admin']), adminController.getCommissionList);
+router.get('/admin/companions/:id/performance', auth(['admin']), adminController.getCompanionPerformance);
+router.get('/admin/disputes', auth(['admin']), adminController.getDisputeList);
+router.get('/admin/finance/reconciliation', auth(['admin']), adminController.getReconciliationList);
 
 module.exports = router;

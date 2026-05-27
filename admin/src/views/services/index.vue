@@ -80,7 +80,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { getServiceListApi, createServiceApi, updateServiceApi } from '@/api'
 
 const loading = ref(false)
@@ -88,7 +88,7 @@ const serviceList = ref([])
 const formDialogVisible = ref(false)
 const isEdit = ref(false)
 const currentServiceId = ref(null)
-const formRef = ref<FormInstance>()
+const formRef = ref(null)
 
 const serviceForm = reactive({
   name: '',
@@ -97,7 +97,7 @@ const serviceForm = reactive({
   duration: 120
 })
 
-const formRules: FormRules = {
+const formRules = {
   name: [{ required: true, message: '请输入服务名称', trigger: 'blur' }],
   base_price: [{ required: true, message: '请输入基础价格', trigger: 'change' }],
   duration: [{ required: true, message: '请输入服务时长', trigger: 'change' }]
