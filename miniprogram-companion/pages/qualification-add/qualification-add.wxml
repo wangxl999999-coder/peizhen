@@ -12,12 +12,12 @@
 
     <view class="form-item">
       <text class="label">证书编号</text>
-      <input class="input" placeholder="请输入证书编号" value="{{certNo}}" data-field="certNo}}" bindinput="onInput" />
+      <input class="input" placeholder="请输入证书编号" value="{{certNo}}" data-field="certNo" bindinput="onInput" />
     </view>
 
     <view class="form-item">
       <text class="label">签发日期</text>
-      <picker mode="date" value="{{issueDate}}" data-field="issueDate}}" bindchange="onDateChange">
+      <picker mode="date" value="{{issueDate}}" data-field="issueDate" bindchange="onDateChange">
         <view class="picker-value">
           {{issueDate || '请选择签发日期'}}
           <text class="arrow">›</text>
@@ -27,7 +27,7 @@
 
     <view class="form-item">
       <text class="label">有效期至</text>
-      <picker mode="date" value="{{expireDate}}" data-field="expireDate}}" bindchange="onDateChange">
+      <picker mode="date" value="{{expireDate}}" data-field="expireDate" bindchange="onDateChange">
         <view class="picker-value">
           {{expireDate || '请选择有效期'}}
           <text class="arrow">›</text>

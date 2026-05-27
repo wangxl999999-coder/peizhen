@@ -114,19 +114,31 @@ async function getServiceSettings(req, res) {
   const companionId = req.user.id;
 
   try {
-    const services = memoryDb.findAll('companionServices', { companion_id: companionId });
-    const cities = memoryDb.findAll('companionCities', { companion_id: companionId });
-    const hospitals = memoryDb.findAll('companionHospitals', { companion_id: companionId });
-    const departments = memoryDb.findAll('companionDepartments', { companion_id: companionId });
-    const workTimes = memoryDb.findAll('companionWorkTimes', { companion_id: companionId });
-
-    res.json(success({
-      services,
-      cities,
-      hospitals,
-      departments,
-      workTimes
-    }));
+    const companion = memoryDb.findOne('companions', { id: companionId });
+    
+    if (companion) {
+      res.json(success({
+        city_ids: companion.city_ids ? companion.city_ids.split(',').map(Number) : [],
+        hospital_ids: companion.hospital_ids ? companion.hospital_ids.split(',').map(Number) : [],
+        department_ids: companion.department_ids ? companion.department_ids.split(',').map(Number) : [],
+        service_type_ids: companion.service_type_ids ? companion.service_type_ids.split(',').map(Number) : [],
+        time_slot_ids: companion.time_slot_ids ? companion.time_slot_ids.split(',').map(Number) : [],
+        base_price: companion.base_price || '',
+        price_per_hour: companion.price_per_hour || '',
+        work_status: companion.work_status !== undefined ? companion.work_status : 1
+      }));
+    } else {
+      res.json(success({
+        city_ids: [],
+        hospital_ids: [],
+        department_ids: [],
+        service_type_ids: [],
+        time_slot_ids: [],
+        base_price: '',
+        price_per_hour: '',
+        work_status: 1
+      }));
+    }
   } catch (err) {
     console.error('获取服务设置失败:', err);
     res.json(error('获取失败'));
@@ -135,74 +147,46 @@ async function getServiceSettings(req, res) {
 
 async function saveServiceSettings(req, res) {
   const companionId = req.user.id;
-  const { services, cities, hospitals, departments, workTimes } = req.body;
+  const {
+    city_ids,
+    hospital_ids,
+    department_ids,
+    service_type_ids,
+    time_slot_ids,
+    base_price,
+    price_per_hour,
+    work_status
+  } = req.body;
 
   try {
-    const existingServices = memoryDb.findAll('companionServices', { companion_id: companionId });
-    existingServices.forEach(s => memoryDb.remove('companionServices', s.id));
-    if (services && services.length > 0) {
-      services.forEach(s => {
-        memoryDb.insert('companionServices', {
-          companion_id: companionId,
-          service_type: s.service_type,
-          service_name: s.service_name,
-          base_price: s.base_price || 0,
-          custom_price: s.custom_price || s.base_price || 0,
-          is_enabled: s.is_enabled !== undefined ? s.is_enabled : 1
-        });
-      });
+    const updateData = {};
+    
+    if (city_ids !== undefined) {
+      updateData.city_ids = Array.isArray(city_ids) ? city_ids.join(',') : '';
+    }
+    if (hospital_ids !== undefined) {
+      updateData.hospital_ids = Array.isArray(hospital_ids) ? hospital_ids.join(',') : '';
+    }
+    if (department_ids !== undefined) {
+      updateData.department_ids = Array.isArray(department_ids) ? department_ids.join(',') : '';
+    }
+    if (service_type_ids !== undefined) {
+      updateData.service_type_ids = Array.isArray(service_type_ids) ? service_type_ids.join(',') : '';
+    }
+    if (time_slot_ids !== undefined) {
+      updateData.time_slot_ids = Array.isArray(time_slot_ids) ? time_slot_ids.join(',') : '';
+    }
+    if (base_price !== undefined) {
+      updateData.base_price = base_price;
+    }
+    if (price_per_hour !== undefined) {
+      updateData.price_per_hour = price_per_hour;
+    }
+    if (work_status !== undefined) {
+      updateData.work_status = work_status;
     }
 
-    const existingCities = memoryDb.findAll('companionCities', { companion_id: companionId });
-    existingCities.forEach(c => memoryDb.remove('companionCities', c.id));
-    if (cities && cities.length > 0) {
-      cities.forEach(c => {
-        memoryDb.insert('companionCities', {
-          companion_id: companionId,
-          city_id: c.city_id,
-          city_name: c.city_name
-        });
-      });
-    }
-
-    const existingHospitals = memoryDb.findAll('companionHospitals', { companion_id: companionId });
-    existingHospitals.forEach(h => memoryDb.remove('companionHospitals', h.id));
-    if (hospitals && hospitals.length > 0) {
-      hospitals.forEach(h => {
-        memoryDb.insert('companionHospitals', {
-          companion_id: companionId,
-          hospital_id: h.hospital_id,
-          hospital_name: h.hospital_name
-        });
-      });
-    }
-
-    const existingDepartments = memoryDb.findAll('companionDepartments', { companion_id: companionId });
-    existingDepartments.forEach(d => memoryDb.remove('companionDepartments', d.id));
-    if (departments && departments.length > 0) {
-      departments.forEach(d => {
-        memoryDb.insert('companionDepartments', {
-          companion_id: companionId,
-          department_id: d.department_id,
-          department_name: d.department_name
-        });
-      });
-    }
-
-    const existingWorkTimes = memoryDb.findAll('companionWorkTimes', { companion_id: companionId });
-    existingWorkTimes.forEach(w => memoryDb.remove('companionWorkTimes', w.id));
-    if (workTimes && workTimes.length > 0) {
-      workTimes.forEach(w => {
-        memoryDb.insert('companionWorkTimes', {
-          companion_id: companionId,
-          day_of_week: w.day_of_week,
-          time_slot_id: w.time_slot_id || 0,
-          start_time: w.start_time,
-          end_time: w.end_time,
-          is_enabled: w.is_enabled !== undefined ? w.is_enabled : 1
-        });
-      });
-    }
+    memoryDb.update('companions', companionId, updateData);
 
     res.json(success(null, '服务设置已保存'));
   } catch (err) {
@@ -922,6 +906,134 @@ async function getTodayOrders(req, res) {
   }
 }
 
+async function getOrderDetail(req, res) {
+  const companionId = req.user.id;
+  const orderId = parseInt(req.params.id);
+
+  try {
+    const order = memoryDb.findOne('orders', { id: orderId, companion_id: companionId });
+    
+    if (!order) {
+      return res.json(error('订单不存在'));
+    }
+
+    const orderStatusMap = {
+      pending_accept: '待接单',
+      accepted: '已接单',
+      pending_service: '待服务',
+      in_service: '服务中',
+      pending_evaluation: '待评价',
+      completed: '已完成',
+      cancelled: '已取消'
+    };
+
+    const result = {
+      ...order,
+      status_text: orderStatusMap[order.status] || order.status
+    };
+
+    res.json(success(result));
+  } catch (err) {
+    console.error('获取订单详情失败:', err);
+    res.json(error('获取失败'));
+  }
+}
+
+async function startService(req, res) {
+  const companionId = req.user.id;
+  const orderId = parseInt(req.params.id);
+
+  try {
+    const order = memoryDb.findOne('orders', { id: orderId, companion_id: companionId });
+    
+    if (!order) {
+      return res.json(error('订单不存在'));
+    }
+
+    if (order.status !== 'accepted' && order.status !== 'pending_service') {
+      return res.json(error('当前订单状态无法开始服务'));
+    }
+
+    memoryDb.update('orders', orderId, {
+      status: 'in_service',
+      service_start_time: new Date().toISOString().slice(0, 19).replace('T', ' ')
+    });
+
+    res.json(success(null, '服务已开始'));
+  } catch (err) {
+    console.error('开始服务失败:', err);
+    res.json(error('操作失败'));
+  }
+}
+
+async function completeService(req, res) {
+  const companionId = req.user.id;
+  const orderId = parseInt(req.params.id);
+
+  try {
+    const order = memoryDb.findOne('orders', { id: orderId, companion_id: companionId });
+    
+    if (!order) {
+      return res.json(error('订单不存在'));
+    }
+
+    if (order.status !== 'in_service') {
+      return res.json(error('当前订单状态无法完成服务'));
+    }
+
+    memoryDb.update('orders', orderId, {
+      status: 'pending_evaluation',
+      service_end_time: new Date().toISOString().slice(0, 19).replace('T', ' ')
+    });
+
+    res.json(success(null, '服务已完成'));
+  } catch (err) {
+    console.error('完成服务失败:', err);
+    res.json(error('操作失败'));
+  }
+}
+
+async function getSkills(req, res) {
+  const companionId = req.user.id;
+
+  try {
+    const companion = memoryDb.findOne('companions', { id: companionId });
+    
+    if (!companion) {
+      return res.json(error('用户不存在'));
+    }
+
+    res.json(success({
+      skills: companion.skills ? companion.skills.split(',') : []
+    }));
+  } catch (err) {
+    console.error('获取技能失败:', err);
+    res.json(error('获取失败'));
+  }
+}
+
+async function updateSkills(req, res) {
+  const companionId = req.user.id;
+  const { skills } = req.body;
+
+  try {
+    const companion = memoryDb.findOne('companions', { id: companionId });
+    
+    if (!companion) {
+      return res.json(error('用户不存在'));
+    }
+
+    memoryDb.update('companions', companionId, {
+      skills: skills || ''
+    });
+
+    res.json(success(null, '保存成功'));
+  } catch (err) {
+    console.error('保存技能失败:', err);
+    res.json(error('保存失败'));
+  }
+}
+
 async function getTrainingList(req, res) {
   const { category, page = 1, pageSize = 10 } = req.query;
 
@@ -1059,5 +1171,10 @@ module.exports = {
   createComplaint,
   getComplaintList,
   getProfile,
-  getTodayOrders
+  getTodayOrders,
+  getOrderDetail,
+  startService,
+  completeService,
+  getSkills,
+  updateSkills
 };
