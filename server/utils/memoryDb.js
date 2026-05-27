@@ -347,6 +347,7 @@ const data = {
     }
   ],
   complaints: [],
+  afterSales: [],
   orderGrabs: []
 };
 

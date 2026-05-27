@@ -120,10 +120,8 @@ let repurchaseChart = null
 
 const loadUserStats = async () => {
   try {
-    const res = await request.get('/admin/users/statistics')
-    if (res.code === 200) {
-      userStats.value = res.data
-    }
+    const data = await request.get('/admin/users/statistics')
+    userStats.value = data
   } catch (e) {
     console.error(e)
   }
@@ -131,9 +129,8 @@ const loadUserStats = async () => {
 
 const loadGrowthStats = async () => {
   try {
-    const res = await request.get('/admin/stats/user-growth')
-    if (res.code === 200 && growthChart) {
-      const data = res.data.daily || []
+    const data = await request.get('/admin/stats/user-growth')
+    if (growthChart) {
       growthChart.setOption({
         tooltip: { trigger: 'axis' },
         xAxis: {
@@ -162,19 +159,19 @@ const loadGrowthStats = async () => {
 
 const loadActivityStats = async () => {
   try {
-    const res = await request.get('/admin/stats/activity')
-    if (res.code === 200 && activityChart) {
-      const data = res.data.daily || []
+    const data = await request.get('/admin/stats/activity')
+    if (activityChart) {
+      const daily = data.last7_days || []
       activityChart.setOption({
         tooltip: { trigger: 'axis' },
         xAxis: {
           type: 'category',
-          data: data.map(d => d.date)
+          data: daily.map(d => d.date)
         },
         yAxis: { type: 'value' },
         series: [{
           name: '活跃用户',
-          data: data.map(d => d.active_users),
+          data: daily.map(d => d.active_count),
           type: 'bar',
           itemStyle: { color: '#67C23A' }
         }]
@@ -187,17 +184,16 @@ const loadActivityStats = async () => {
 
 const loadRepurchaseStats = async () => {
   try {
-    const res = await request.get('/admin/stats/repurchase-rate')
-    if (res.code === 200 && repurchaseChart) {
-      const data = res.data
+    const data = await request.get('/admin/stats/repurchase-rate')
+    if (repurchaseChart) {
       repurchaseChart.setOption({
         tooltip: { trigger: 'item' },
         series: [{
           type: 'pie',
           radius: ['40%', '70%'],
           data: [
-            { value: data.repurchase_count || 0, name: '复购用户', itemStyle: { color: '#409EFF' } },
-            { value: (data.total_users || 0) - (data.repurchase_count || 0), name: '单次用户', itemStyle: { color: '#E6A23C' } }
+            { value: data.repeat_user_count || 0, name: '复购用户', itemStyle: { color: '#409EFF' } },
+            { value: (data.total_users || 0) - (data.repeat_user_count || 0), name: '单次用户', itemStyle: { color: '#E6A23C' } }
           ]
         }]
       })
@@ -209,12 +205,10 @@ const loadRepurchaseStats = async () => {
 
 const loadCompanionStats = async () => {
   try {
-    const res = await request.get('/admin/companion-statistics', {
+    const data = await request.get('/admin/companion-statistics', {
       params: { period: companionStatsPeriod.value }
     })
-    if (res.code === 200) {
-      companionStatsList.value = res.data.list || []
-    }
+    companionStatsList.value = data.list || data || []
   } catch (e) {
     console.error(e)
   }
@@ -222,11 +216,9 @@ const loadCompanionStats = async () => {
 
 const viewPerformance = async (row) => {
   try {
-    const res = await request.get(`/admin/companions/${row.companion_id}/performance`)
-    if (res.code === 200) {
-      performanceData.value = res.data
-      performanceVisible.value = true
-    }
+    const data = await request.get(`/admin/companions/${row.companion_id || row.id}/performance`)
+    performanceData.value = data
+    performanceVisible.value = true
   } catch (e) {
     console.error(e)
   }

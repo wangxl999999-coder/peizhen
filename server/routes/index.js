@@ -121,22 +121,23 @@ router.get('/companion/:id', companionController.getCompanionDetail);
 router.get('/admin/dashboard', auth(['admin']), adminController.getDashboardStats);
 
 router.get('/admin/users', auth(['admin']), adminController.getUserList);
+router.get('/admin/users/statistics', auth(['admin']), adminController.getUserStatistics);
 router.get('/admin/users/:id', auth(['admin']), adminController.getUserDetail);
 router.post('/admin/users/:id/status', auth(['admin']), adminController.updateUserStatus);
 
 router.get('/admin/companions', auth(['admin']), adminController.getCompanionList);
+router.get('/admin/companions/statistics', auth(['admin']), adminController.getCompanionStatistics);
 router.get('/admin/companions/:id', auth(['admin']), adminController.getCompanionDetail);
 router.post('/admin/companions/:id/audit', auth(['admin']), adminController.auditCompanion);
 router.post('/admin/verifications/:id/audit', auth(['admin']), adminController.auditVerification);
 router.post('/admin/qualifications/:id/audit', auth(['admin']), adminController.auditQualification);
 router.put('/admin/companion-services/:id', auth(['admin']), adminController.updateCompanionService);
 router.put('/admin/companions/:id/rating', auth(['admin']), adminController.updateCompanionRating);
-router.get('/admin/companion-statistics', auth(['admin']), adminController.getCompanionStatistics);
 
 router.get('/admin/orders', auth(['admin']), adminController.getOrderList);
-router.get('/admin/orders/:id', auth(['admin']), adminController.getOrderDetail);
 router.get('/admin/orders/statistics', auth(['admin']), adminController.getOrderStatistics);
 router.get('/admin/orders/export', auth(['admin']), adminController.exportOrders);
+router.get('/admin/orders/:id', auth(['admin']), adminController.getOrderDetail);
 
 router.get('/admin/after-sales', auth(['admin']), adminController.getAfterSalesList);
 router.post('/admin/after-sales/:id/handle', auth(['admin']), adminController.handleAfterSales);
@@ -187,7 +188,6 @@ router.post('/admin/invoices/:id/handle', auth(['admin']), adminController.handl
 router.get('/admin/stats/user-growth', auth(['admin']), adminController.getUserGrowthStats);
 router.get('/admin/stats/activity', auth(['admin']), adminController.getActivityStats);
 router.get('/admin/stats/repurchase-rate', auth(['admin']), adminController.getRepurchaseRate);
-router.get('/admin/users/statistics', auth(['admin']), adminController.getUserStatistics);
 router.post('/admin/orders/:id/refund', auth(['admin']), adminController.processRefund);
 router.get('/admin/finance/commission', auth(['admin']), adminController.getCommissionList);
 router.get('/admin/companions/:id/performance', auth(['admin']), adminController.getCompanionPerformance);

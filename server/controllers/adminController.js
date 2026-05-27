@@ -5,81 +5,69 @@ async function getDashboardStats(req, res) {
   try {
     const userCount = memoryDb.data.users.length;
     const companionCount = memoryDb.data.companions.filter(c => c.status === 1).length;
-    const orderCount = memoryDb.data.orders.length;
-    const totalAmount = memoryDb.data.orders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
-    const pendingAccept = memoryDb.data.orders.filter(o => o.status === 'pending_accept').length;
-    const pendingAudit = memoryDb.data.companions.filter(c => c.status === 0).length;
+    
+    const today = new Date().toISOString().split('T')[0];
+    const todayOrders = memoryDb.data.orders.filter(o => o.create_time.startsWith(today));
+    const todayOrderCount = todayOrders.length;
+    const todayIncome = todayOrders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0);
 
-    const last7Days = [];
+    const weekDates = [];
+    const weekOrderCounts = [];
     for (let i = 6; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
       const dayOrders = memoryDb.data.orders.filter(o => o.create_time.startsWith(dateStr));
-      last7Days.push({
-        date: dateStr,
-        order_count: dayOrders.length,
-        amount: dayOrders.reduce((sum, o) => sum + parseFloat(o.total_price || 0), 0)
-      });
+      weekDates.push(dateStr.slice(5));
+      weekOrderCounts.push(dayOrders.length);
     }
 
-    const serviceStats = {};
-    memoryDb.data.orders.forEach(o => {
-      if (!serviceStats[o.service_type]) {
-        serviceStats[o.service_type] = { service_name: o.service_name || o.service_type, count: 0 };
-      }
-      serviceStats[o.service_type].count++;
-    });
-    const serviceStatsList = Object.values(serviceStats).sort((a, b) => b.count - a.count).slice(0, 6);
-
-    const last30Days = [];
+    const monthDates = [];
+    const monthOrderCounts = [];
     for (let i = 29; i >= 0; i--) {
       const date = new Date();
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
-      const dayUsers = memoryDb.data.users.filter(u => u.create_time.startsWith(dateStr));
-      last30Days.push({
-        date: dateStr,
-        user_count: dayUsers.length
-      });
+      const dayOrders = memoryDb.data.orders.filter(o => o.create_time.startsWith(dateStr));
+      monthDates.push(dateStr.slice(5));
+      monthOrderCounts.push(dayOrders.length);
     }
 
-    const activeUsers = memoryDb.data.users.filter(u => {
-      const last7 = new Date();
-      last7.setDate(last7.getDate() - 7);
-      return new Date(u.last_login_time || u.create_time) >= last7;
-    }).length;
+    const serviceDistribution = {};
+    memoryDb.data.orders.forEach(o => {
+      const name = o.service_name || o.service_type || '其他';
+      if (!serviceDistribution[name]) {
+        serviceDistribution[name] = { value: 0, name };
+      }
+      serviceDistribution[name].value++;
+    });
+    const serviceDistributionList = Object.values(serviceDistribution);
 
-    const repeatUsers = memoryDb.data.users.filter(u => {
-      const userOrders = memoryDb.data.orders.filter(o => o.user_id === u.id);
-      return userOrders.length >= 2;
-    }).length;
-    const repurchaseRate = userCount > 0 ? ((repeatUsers / userCount) * 100).toFixed(1) : 0;
+    const latestOrders = [...memoryDb.data.orders]
+      .sort((a, b) => new Date(b.create_time) - new Date(a.create_time))
+      .slice(0, 5);
 
-    const companionAcceptRate = companionCount > 0 ? ((memoryDb.data.companions.filter(c => c.status === 1).reduce((sum, c) => {
-      const orders = memoryDb.data.orders.filter(o => o.companion_id === c.id);
-      const accepted = orders.filter(o => o.status !== 'pending_accept');
-      return sum + (orders.length > 0 ? (accepted.length / orders.length) * 100 : 0);
-    }, 0)) / companionCount).toFixed(1) : 0;
-
-    const goodEvaluations = memoryDb.data.evaluations.filter(e => e.rating >= 4).length;
-    const totalEvaluations = memoryDb.data.evaluations.length;
-    const goodRate = totalEvaluations > 0 ? ((goodEvaluations / totalEvaluations) * 100).toFixed(1) : 0;
+    const topCompanions = [...memoryDb.data.companions]
+      .filter(c => c.status === 1)
+      .sort((a, b) => (b.order_count || 0) - (a.order_count || 0))
+      .slice(0, 5);
 
     res.json(success({
-      total_users: userCount,
-      total_companions: companionCount,
-      total_orders: orderCount,
-      total_amount: totalAmount,
-      pending_accept: pendingAccept,
-      pending_audit: pendingAudit,
-      last7_days: last7Days,
-      service_stats: serviceStatsList,
-      user_growth: last30Days,
-      active_users: activeUsers,
-      repurchase_rate: repurchaseRate,
-      companion_accept_rate: companionAcceptRate,
-      companion_good_rate: goodRate
+      user_count: userCount,
+      companion_count: companionCount,
+      today_orders: todayOrderCount,
+      today_income: todayIncome,
+      week_data: {
+        dates: weekDates,
+        order_counts: weekOrderCounts
+      },
+      month_data: {
+        dates: monthDates,
+        order_counts: monthOrderCounts
+      },
+      service_distribution: serviceDistributionList,
+      latest_orders: latestOrders,
+      top_companions: topCompanions
     }));
   } catch (err) {
     console.error('获取统计数据失败:', err);
@@ -167,7 +155,7 @@ async function updateUserStatus(req, res) {
 }
 
 async function getCompanionList(req, res) {
-  const { keyword, status, page = 1, pageSize = 10 } = req.query;
+  const { keyword, verify_status, page = 1, pageSize = 10 } = req.query;
 
   try {
     let companions = [...memoryDb.data.companions];
@@ -179,8 +167,12 @@ async function getCompanionList(req, res) {
       );
     }
 
-    if (status !== undefined && status !== '') {
-      companions = companions.filter(c => c.status === parseInt(status));
+    if (verify_status !== undefined && verify_status !== '') {
+      const statusMap = { pending: 0, approved: 1, rejected: 2 };
+      const targetStatus = statusMap[verify_status];
+      if (targetStatus !== undefined) {
+        companions = companions.filter(c => c.status === targetStatus);
+      }
     }
 
     companions = companions.map(c => {
@@ -189,8 +181,10 @@ async function getCompanionList(req, res) {
       const evaluations = memoryDb.data.evaluations.filter(e => e.companion_id === c.id);
       const goodEval = evaluations.filter(e => e.rating >= 4);
       const complaints = memoryDb.data.complaints.filter(co => co.companion_id === c.id);
+      const verifyStatusMap = { 0: 'pending', 1: 'approved', 2: 'rejected' };
       return {
         ...c,
+        verify_status: verifyStatusMap[c.status] || 'pending',
         accept_rate: orders.length > 0 ? ((accepted.length / orders.length) * 100).toFixed(1) : '0.0',
         good_rate: evaluations.length > 0 ? ((goodEval.length / evaluations.length) * 100).toFixed(1) : '0.0',
         complaint_count: complaints.length,
@@ -257,11 +251,18 @@ async function getCompanionDetail(req, res) {
 
 async function auditCompanion(req, res) {
   const companionId = parseInt(req.params.id);
-  const { status, remark } = req.body;
+  const { verify_status, status, remark } = req.body;
 
   try {
+    const statusMap = { pending: 0, approved: 1, rejected: 2 };
+    const targetStatus = verify_status !== undefined ? statusMap[verify_status] : (status !== undefined ? parseInt(status) : undefined);
+    
+    if (targetStatus === undefined) {
+      return res.json(error('请提供审核状态'));
+    }
+    
     memoryDb.update('companions', companionId, {
-      status: parseInt(status),
+      status: targetStatus,
       audit_time: new Date().toISOString().slice(0, 19).replace('T', ' ')
     });
     res.json(success(null, '审核成功'));
@@ -369,12 +370,16 @@ async function getOrderList(req, res) {
     orders = orders.map(o => {
       const user = memoryDb.findOne('users', { id: o.user_id });
       const companion = memoryDb.findOne('companions', { id: o.companion_id });
+      const hospital = memoryDb.findOne('hospitals', { id: o.hospital_id });
+      const service = memoryDb.findOne('services', { id: o.service_id });
       return {
         ...o,
         user_name: user?.nickname || '',
         user_phone: user?.phone || '',
         companion_name: companion?.real_name || '',
-        companion_phone: companion?.phone || ''
+        companion_phone: companion?.phone || '',
+        hospital_name: hospital?.name || '',
+        service_name: service?.name || o.service_type || ''
       };
     });
 
@@ -406,6 +411,8 @@ async function getOrderDetail(req, res) {
 
     const user = memoryDb.findOne('users', { id: order.user_id });
     const companion = memoryDb.findOne('companions', { id: order.companion_id });
+    const hospital = memoryDb.findOne('hospitals', { id: order.hospital_id });
+    const service = memoryDb.findOne('services', { id: order.service_id });
     const patient = order.patient_id ? memoryDb.findOne('patients', { id: order.patient_id }) : null;
     const evaluation = memoryDb.findOne('evaluations', { order_id: orderId });
     const afterSale = memoryDb.findOne('afterSales', { order_id: orderId });
@@ -414,8 +421,17 @@ async function getOrderDetail(req, res) {
     const nodes = memoryDb.findAll('orderNodes', { order_id: orderId });
     const serviceFiles = memoryDb.findAll('orderServiceFiles', { order_id: orderId });
 
+    const timeParts = (order.time_slot || '').split('-');
+    const startTime = timeParts[0] || '';
+    const endTime = timeParts[1] || '';
+
     res.json(success({
       ...order,
+      service_name: service?.name || order.service_type || '',
+      hospital_name: hospital?.name || '',
+      symptom_description: order.symptom || '',
+      start_time: startTime,
+      end_time: endTime,
       user_name: user?.nickname || '',
       user_phone: user?.phone || '',
       companion_name: companion?.real_name || '',
@@ -1448,18 +1464,18 @@ async function getUserStatistics(req, res) {
     today.setHours(0, 0, 0, 0);
 
     const newToday = memoryDb.data.users.filter(u => {
-      const d = new Date(u.created_at);
+      const d = new Date(u.create_time);
       return d >= today;
     }).length;
 
     const thisMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const newThisMonth = memoryDb.data.users.filter(u => {
-      const d = new Date(u.created_at);
+      const d = new Date(u.create_time);
       return d >= thisMonth;
     }).length;
 
     const activeUsers = memoryDb.data.orders.filter(o => {
-      const d = new Date(o.created_at);
+      const d = new Date(o.create_time);
       return d >= today;
     }).map(o => o.user_id).filter((v, i, a) => a.indexOf(v) === i).length;
 
@@ -1470,7 +1486,7 @@ async function getUserStatistics(req, res) {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split('T')[0];
-      const count = memoryDb.data.users.filter(u => u.created_at && u.created_at.split('T')[0] === dateStr).length;
+      const count = memoryDb.data.users.filter(u => u.create_time && u.create_time.startsWith(dateStr)).length;
       growthData.push({ date: dateStr, count });
     }
 

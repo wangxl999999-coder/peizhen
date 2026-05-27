@@ -5,7 +5,7 @@ export const loginApi = (data) => {
 }
 
 export const getStatisticsApi = () => {
-  return request.get('/admin/statistics')
+  return request.get('/admin/dashboard')
 }
 
 export const getUserListApi = (params) => {
@@ -25,7 +25,7 @@ export const getCompanionListApi = (params) => {
 }
 
 export const verifyCompanionApi = (id, data) => {
-  return request.put(`/admin/companions/${id}/verify`, data)
+  return request.post(`/admin/companions/${id}/audit`, data)
 }
 
 export const updateCompanionApi = (id, data) => {
