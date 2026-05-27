@@ -250,9 +250,9 @@ async function adminLogin(req, res) {
     const crypto = require('crypto');
     const passwordHash = crypto.createHash('md5').update(password).digest('hex');
 
-    const admin = await db.queryOne('SELECT * FROM pz_admin WHERE username = ? AND password = ?', [username, passwordHash]);
+    const admin = memoryDb.findOne('admins', { username });
     
-    if (!admin) {
+    if (!admin || admin.password !== passwordHash) {
       return res.json(error('用户名或密码错误'));
     }
 
@@ -260,7 +260,7 @@ async function adminLogin(req, res) {
       return res.json(error('账号已被禁用'));
     }
 
-    await db.execute('UPDATE pz_admin SET last_login_time = NOW() WHERE id = ?', [admin.id]);
+    memoryDb.update('admins', admin.id, { last_login_time: new Date().toISOString() });
 
     const token = jwt.sign(
       { id: admin.id, username: admin.username, role: 'admin' },
@@ -270,7 +270,7 @@ async function adminLogin(req, res) {
 
     res.json(success({
       token,
-      userInfo: {
+      user: {
         id: admin.id,
         username: admin.username,
         real_name: admin.real_name,

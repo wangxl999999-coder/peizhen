@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export const loginApi = (data) => {
-  return request.post('/auth/admin/login', data)
+  return request.post('/auth/admin-login', data)
 }
 
 export const getStatisticsApi = () => {

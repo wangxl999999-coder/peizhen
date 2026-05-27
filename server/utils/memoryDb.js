@@ -157,7 +157,7 @@ const data = {
     { id: 2, companion_id: 1, title: '协助李先生完成术后复查', content: '李先生是外地患者，在北京做了心脏支架手术，需要每月复查。我每次都会提前帮他挂号，陪同见医生，帮他记录医嘱，取药后详细讲解用法用量。', service_type: 'postoperative', case_date: '2024-02-20' }
   ],
   admins: [
-    { id: 1, username: 'admin', password: 'e10adc3949ba59abbe56e057f20f883e', real_name: '管理员', role: 'super_admin', status: 1, create_time: '2024-01-01 00:00:00', last_login_time: '2024-01-01 00:00:00' }
+    { id: 1, username: 'admin', password: '0192023a7bbd73250516f069df18b500', real_name: '管理员', role: 'super_admin', status: 1, create_time: '2024-01-01 00:00:00', last_login_time: '2024-01-01 00:00:00' }
   ],
   settings: {
     platform_name: '陪诊服务平台',

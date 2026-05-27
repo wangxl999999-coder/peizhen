@@ -23,7 +23,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     const res = response.data
-    if (res.code === 0) {
+    if (res.code === 200) {
       return res.data
     } else if (res.code === 401) {
       localStorage.removeItem('adminToken')
